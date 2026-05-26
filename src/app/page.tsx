@@ -1,65 +1,119 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { IconBolt, IconBrandGithub, IconBug, IconGitBranch, IconLock, IconSparkles, IconTextScanAi, IconZoomCode } from '@tabler/icons-react';
+import { buttonVariants } from '@/components/ui/button';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+const features = [
+  {
+    icon: IconBug,
+    color: 'text-red-400',
+    title: 'Bug Detection',
+    description: 'Catches logic errors, null pointer dereferences, type mismatches, and off-by-one mistakes before they reach production.',
+  },
+  {
+    icon: IconLock,
+    color: 'text-orange-400',
+    title: 'Security Analysis',
+    description: 'Identifies injection vulnerabilities, authentication flaws, exposed secrets, and insecure dependencies.',
+  },
+  {
+    icon: IconBolt,
+    color: 'text-yellow-400',
+    title: 'Performance Review',
+    description: 'Spots N+1 queries, blocking I/O, unnecessary re-renders, and memory leaks in your diff.',
+  },
+  {
+    icon: IconSparkles,
+    color: 'text-purple-400',
+    title: 'Style & Quality',
+    description: 'Enforces naming conventions, highlights overly complex functions, and suggests structural improvements.',
+  },
+];
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <div className='flex min-h-screen flex-col bg-background'>
+      <header className='border-b border-border px-6 py-4'>
+        <div className='mx-auto flex max-w-5xl items-center justify-between'>
+          <div className='flex items-center gap-2'>
+            <IconTextScanAi
+              stroke={2}
+              size={24}
+              className='text-primary'
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <span className='font-mono font-semibold'>MergeLens</span>
+          </div>
+          <div className='flex items-center gap-3'>
+            <Link
+              href='/login'
+              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
+            >
+              Sign in
+            </Link>
+            <Link
+              href='/login'
+              className={cn(buttonVariants({ size: 'sm' }), 'gap-2')}
+            >
+              <IconBrandGithub size={14} />
+              Get started
+            </Link>
+          </div>
         </div>
+      </header>
+
+      <main className='flex flex-1 flex-col'>
+        <section className='mx-auto flex w-full max-w-5xl flex-col items-center px-6 py-24 text-center'>
+          <div className='mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs text-muted-foreground'>
+            <span className='h-1.5 w-1.5 rounded-full bg-green-400' />
+            Multi-agent AI review pipeline
+          </div>
+          <h1 className='max-w-2xl text-4xl font-bold tracking-tight leading-tight'>
+            AI-powered PR reviews,
+            <br />
+            <span className='text-primary'>automated.</span>
+          </h1>
+          <p className='mt-6 max-w-lg text-base text-muted-foreground leading-relaxed'>
+            MergeLens runs four specialized AI agents on every pull request — catching bugs, security issues, performance problems, and style violations before
+            your team reviews the code.
+          </p>
+          <div className='mt-8 flex items-center gap-3'>
+            <Link
+              href='/login'
+              className={cn(buttonVariants(), 'gap-2')}
+            >
+              <IconBrandGithub size={16} />
+              Sign in with GitHub
+            </Link>
+            <Link
+              href='/dashboard'
+              className={cn(buttonVariants({ variant: 'outline' }))}
+            >
+              View dashboard
+            </Link>
+          </div>
+        </section>
+
+        <section className='mx-auto w-full max-w-5xl px-6 pb-24'>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+            {features.map((f) => (
+              <Card
+                key={f.title}
+                className='bg-card/60'
+              >
+                <CardHeader>
+                  <f.icon
+                    size={22}
+                    className={f.color}
+                  />
+                  <CardTitle className='mt-2 text-sm'>{f.title}</CardTitle>
+                  <CardDescription className='text-xs leading-relaxed'>{f.description}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+        </section>
       </main>
+      <footer className='border-t border-border px-6 py-4 text-center text-xs text-muted-foreground'>MergeLens — built with Claude + Gemini</footer>
     </div>
   );
 }
