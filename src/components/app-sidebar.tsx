@@ -1,23 +1,20 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   IconBug,
   IconBuildingWarehouse,
+  IconChartBar,
   IconGitBranch,
   IconGitPullRequest,
   IconLayoutDashboard,
   IconLogout,
   IconSettings,
-} from "@tabler/icons-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  IconUser,
+} from '@tabler/icons-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import {
   Sidebar,
   SidebarContent,
@@ -29,29 +26,34 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { MOCK_USER } from "@/data/mock";
+} from '@/components/ui/sidebar';
+import { signOut, useSession } from '@/lib/auth-client';
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: IconLayoutDashboard },
-  { href: "/reviews", label: "Reviews", icon: IconGitPullRequest },
-  { href: "/findings", label: "Findings", icon: IconBug },
-  { href: "/repositories", label: "Repositories", icon: IconBuildingWarehouse },
-];
-
-const bottomNavItems = [
-  { href: "/settings", label: "Settings", icon: IconSettings },
+  { href: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
+  { href: '/reviews', label: 'Reviews', icon: IconGitPullRequest },
+  { href: '/findings', label: 'Findings', icon: IconBug },
+  { href: '/repositories', label: 'Repositories', icon: IconBuildingWarehouse },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   return (
     <Sidebar>
-      <SidebarHeader className="border-b border-sidebar-border px-4 py-3">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <IconGitBranch size={20} className="text-primary" />
-          <span className="font-mono font-semibold tracking-tight">MergeLens</span>
+      <SidebarHeader className='border-b border-sidebar-border px-4 py-3'>
+        <Link
+          href='/dashboard'
+          className='flex items-center gap-2'
+        >
+          <IconGitBranch
+            size={20}
+            className='text-primary'
+          />
+          <span className='font-mono font-semibold tracking-tight'>MergeLens</span>
         </Link>
       </SidebarHeader>
 
@@ -65,7 +67,7 @@ export function AppSidebar() {
                   <SidebarMenuButton
                     render={<Link href={item.href} />}
                     isActive={pathname === item.href || pathname.startsWith(`${item.href}/`)}
-                    className="flex items-center gap-2"
+                    className='flex items-center gap-2'
                   >
                     <item.icon size={16} />
                     <span>{item.label}</span>
@@ -76,49 +78,86 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup className="mt-auto">
+        <SidebarGroup className='mt-auto'>
           <SidebarGroupContent>
             <SidebarMenu>
-              {bottomNavItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    render={<Link href={item.href} />}
-                    isActive={pathname === item.href}
-                    className="flex items-center gap-2"
+              <SidebarMenuItem>
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <SidebarMenuButton
+                        isActive={pathname === '/settings'}
+                        className='flex items-center gap-2'
+                      />
+                    }
                   >
-                    <item.icon size={16} />
-                    <span>{item.label}</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                    <IconSettings size={16} />
+                    <span>Settings</span>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    side='top'
+                    align='start'
+                  >
+                    <DropdownMenuItem onClick={() => router.push('/settings')}>
+                      <IconUser size={14} />
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push('/settings')}>
+                      <IconChartBar size={14} />
+                      Usage
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      variant='destructive'
+                      onClick={() => signOut({ fetchOptions: { onSuccess: () => router.push('/login') } })}
+                    >
+                      <IconLogout size={14} />
+                      Sign out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border p-3">
+      <SidebarFooter className='border-t border-sidebar-border p-3'>
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
               <button
-                type="button"
-                className="flex w-full items-center gap-2 rounded-md p-2 text-sm hover:bg-sidebar-accent"
+                type='button'
+                className='flex w-full items-center gap-2 rounded-md p-2 text-sm hover:bg-sidebar-accent'
               />
             }
           >
-            <Avatar className="h-7 w-7">
-              <AvatarImage src={MOCK_USER.avatarUrl} alt={MOCK_USER.name} />
-              <AvatarFallback className="text-xs">
-                {MOCK_USER.name.split(" ").map((n) => n[0]).join("")}
+            <Avatar className='h-7 w-7'>
+              <AvatarImage
+                src={user?.image ?? undefined}
+                alt={user?.name ?? ''}
+              />
+              <AvatarFallback className='text-xs'>
+                {user?.name
+                  ?.split(' ')
+                  .map((n) => n[0])
+                  .join('') ?? '?'}
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col items-start text-left">
-              <span className="font-medium leading-none">{MOCK_USER.name}</span>
-              <span className="mt-0.5 text-xs text-muted-foreground">@{MOCK_USER.githubLogin}</span>
+            <div className='flex flex-col items-start text-left'>
+              <span className='font-medium leading-none'>{user?.name ?? 'User'}</span>
+              <span className='mt-0.5 text-xs text-muted-foreground'>{user?.email ?? ''}</span>
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="top" align="start" className="w-52">
-            <DropdownMenuItem className="gap-2 text-destructive focus:text-destructive">
+          <DropdownMenuContent
+            side='top'
+            align='start'
+            className='w-52'
+          >
+            <DropdownMenuItem
+              className='gap-2 text-destructive focus:text-destructive'
+              onClick={() => signOut({ fetchOptions: { onSuccess: () => router.push('/login') } })}
+            >
               <IconLogout size={14} />
               Sign out
             </DropdownMenuItem>

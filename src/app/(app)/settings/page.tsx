@@ -12,7 +12,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PageHeader } from "@/components/page-header";
-import { MOCK_USER, MOCK_REVIEWS, getReviewStats } from "@/data/mock";
+import { SignOutButton } from "@/components/sign-out-button";
+import { getSession } from "@/lib/auth";
+import { MOCK_REVIEWS, getReviewStats } from "@/data/mock";
 
 const MONTHLY_LIMIT = 50;
 
@@ -22,7 +24,9 @@ const apiUsage = [
   { provider: "Voyage AI", icon: IconUser, calls: 36, tokens: "—", cost: "$0.18" },
 ];
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const session = await getSession();
+  const user = session!.user;
   const stats = getReviewStats();
   const usagePct = Math.min(100, Math.round((stats.thisMonthReviews / MONTHLY_LIMIT) * 100));
 
@@ -92,13 +96,12 @@ export default function SettingsPage() {
           <CardContent className="space-y-4">
             <div className="flex items-center gap-3">
               <Avatar className="h-12 w-12">
-                <AvatarImage src={MOCK_USER.avatarUrl} alt={MOCK_USER.name} />
-                <AvatarFallback>{MOCK_USER.name.split(" ").map((n) => n[0]).join("")}</AvatarFallback>
+                <AvatarImage src={user.image ?? undefined} alt={user.name} />
+                <AvatarFallback>{user.name.split(" ").map((n: string) => n[0]).join("")}</AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-medium">{MOCK_USER.name}</p>
-                <p className="text-sm text-muted-foreground">@{MOCK_USER.githubLogin}</p>
-                <p className="text-xs text-muted-foreground">{MOCK_USER.email}</p>
+                <p className="font-medium">{user.name}</p>
+                <p className="text-xs text-muted-foreground">{user.email}</p>
               </div>
             </div>
 
@@ -121,9 +124,7 @@ export default function SettingsPage() {
 
             <Separator />
 
-            <button type="button" className="w-full rounded border border-destructive/20 bg-destructive/10 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/20">
-              Sign out
-            </button>
+            <SignOutButton />
           </CardContent>
         </Card>
       </div>
