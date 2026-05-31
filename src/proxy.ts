@@ -12,7 +12,7 @@ export async function proxy(request: NextRequest) {
 	const data = await response.json().catch(() => null);
 
 	if (!data?.user) {
-		return NextResponse.redirect(new URL("/login", request.url));
+		return NextResponse.redirect(new URL("/auth/signin", request.url));
 	}
 
 	return NextResponse.next();

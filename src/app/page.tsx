@@ -45,13 +45,13 @@ export default function LandingPage() {
           </div>
           <div className='flex items-center gap-3'>
             <Link
-              href='/login'
+              href="/auth/signin"
               className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
             >
               Sign in
             </Link>
             <Link
-              href='/login'
+              href="/auth/signin"
               className={cn(buttonVariants({ size: 'sm' }), 'gap-2')}
             >
               <IconBrandGithub size={14} />
@@ -78,7 +78,7 @@ export default function LandingPage() {
           </p>
           <div className='mt-8 flex items-center gap-3'>
             <Link
-              href='/login'
+              href="/auth/signin"
               className={cn(buttonVariants(), 'gap-2')}
             >
               <IconBrandGithub size={16} />

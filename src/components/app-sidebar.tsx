@@ -10,7 +10,6 @@ import {
   IconGitPullRequest,
   IconLayoutDashboard,
   IconLogout,
-  IconSettings,
   IconUser,
 } from '@tabler/icons-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -78,48 +77,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup className='mt-auto'>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <DropdownMenu>
-                  <DropdownMenuTrigger
-                    render={
-                      <SidebarMenuButton
-                        isActive={pathname === '/settings'}
-                        className='flex items-center gap-2'
-                      />
-                    }
-                  >
-                    <IconSettings size={16} />
-                    <span>Settings</span>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    side='top'
-                    align='start'
-                  >
-                    <DropdownMenuItem onClick={() => router.push('/settings')}>
-                      <IconUser size={14} />
-                      Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push('/settings')}>
-                      <IconChartBar size={14} />
-                      Usage
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      variant='destructive'
-                      onClick={() => signOut({ fetchOptions: { onSuccess: () => router.push('/login') } })}
-                    >
-                      <IconLogout size={14} />
-                      Sign out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter className='border-t border-sidebar-border p-3'>
@@ -144,9 +101,9 @@ export function AppSidebar() {
                   .join('') ?? '?'}
               </AvatarFallback>
             </Avatar>
-            <div className='flex flex-col items-start text-left'>
-              <span className='font-medium leading-none'>{user?.name ?? 'User'}</span>
-              <span className='mt-0.5 text-xs text-muted-foreground'>{user?.email ?? ''}</span>
+            <div className='min-w-0 flex flex-col items-start text-left'>
+              <span className='w-full truncate font-medium leading-none'>{user?.name ?? 'User'}</span>
+              <span className='mt-0.5 w-full truncate text-xs text-muted-foreground'>{user?.email ?? ''}</span>
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -154,9 +111,18 @@ export function AppSidebar() {
             align='start'
             className='w-52'
           >
+            <DropdownMenuItem onClick={() => router.push('/settings')}>
+              <IconUser size={14} />
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push('/settings')}>
+              <IconChartBar size={14} />
+              Usage
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
-              className='gap-2 text-destructive focus:text-destructive'
-              onClick={() => signOut({ fetchOptions: { onSuccess: () => router.push('/login') } })}
+              variant='destructive'
+              onClick={() => signOut({ fetchOptions: { onSuccess: () => router.push("/auth/signin") } })}
             >
               <IconLogout size={14} />
               Sign out

@@ -8,7 +8,8 @@ import { AgentBadge } from "@/components/agent-badge";
 import { FindingsTable } from "@/components/findings-table";
 import { PageHeader } from "@/components/page-header";
 import { ReviewStatusBadge } from "@/components/review-status-badge";
-import { MOCK_REVIEWS, getFindingsByReview, getSummaryByReview, type AgentType } from "@/data/mock";
+import { getReview } from "@/lib/api";
+import type { AgentType } from "@/lib/types";
 
 function formatDuration(ms: number) {
   if (ms === 0) return "—";
@@ -33,11 +34,15 @@ const agentSummaryKeys = [
 
 export default async function ReviewDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const review = MOCK_REVIEWS.find((r) => r.id === id);
-  if (!review) notFound();
 
-  const findings = getFindingsByReview(id);
-  const summary = getSummaryByReview(id);
+  let review;
+  try {
+    review = await getReview(id);
+  } catch {
+    notFound();
+  }
+
+  const { findings, summary } = review;
 
   const tabs = [
     { value: "all", label: "All", findings },
@@ -67,11 +72,11 @@ export default async function ReviewDetailPage({ params }: PageProps) {
         {review.completedAt && <span>Completed: {formatDate(review.completedAt)}</span>}
         <span>Duration: {formatDuration(review.durationMs)}</span>
         <span className="font-mono text-xs">
-          <span className="text-red-400">{findings.filter((f) => f.severity === "high").length}H</span>
+          <span className="text-red-400">{review.findingCounts.high}H</span>
           {" · "}
-          <span className="text-amber-400">{findings.filter((f) => f.severity === "medium").length}M</span>
+          <span className="text-amber-400">{review.findingCounts.medium}M</span>
           {" · "}
-          <span className="text-green-400">{findings.filter((f) => f.severity === "low").length}L</span>
+          <span className="text-green-400">{review.findingCounts.low}L</span>
         </span>
       </div>
 

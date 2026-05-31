@@ -1,6 +1,6 @@
 import { IconBolt, IconBug, IconLock, IconSparkles } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import type { AgentType } from "@/data/mock";
+import type { AgentType } from "@/lib/types";
 
 interface AgentBadgeProps {
   agent: AgentType;

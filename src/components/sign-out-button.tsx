@@ -10,7 +10,7 @@ export function SignOutButton() {
     <button
       type="button"
       className="w-full rounded border border-destructive/20 bg-destructive/10 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/20"
-      onClick={() => signOut({ fetchOptions: { onSuccess: () => router.push("/login") } })}
+      onClick={() => signOut({ fetchOptions: { onSuccess: () => router.push("/auth/signin") } })}
     >
       Sign out
     </button>

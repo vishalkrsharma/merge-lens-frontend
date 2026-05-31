@@ -10,9 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MOCK_REPOSITORIES } from "@/data/mock";
+import type { Repository } from "@/lib/types";
 
-export function ReviewsFilterBar() {
+interface ReviewsFilterBarProps {
+  repos: Repository[];
+}
+
+export function ReviewsFilterBar({ repos }: ReviewsFilterBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -43,7 +47,7 @@ export function ReviewsFilterBar() {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All repos</SelectItem>
-          {MOCK_REPOSITORIES.map((r) => (
+          {repos.map((r) => (
             <SelectItem key={r.id} value={`${r.owner}/${r.repo}`}>
               {r.owner}/{r.repo}
             </SelectItem>

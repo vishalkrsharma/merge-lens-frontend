@@ -14,21 +14,38 @@ import {
 import { PageHeader } from "@/components/page-header";
 import { SignOutButton } from "@/components/sign-out-button";
 import { getSession } from "@/lib/auth";
-import { MOCK_REVIEWS, getReviewStats } from "@/data/mock";
+import { getUsage, listRepositories } from "@/lib/api";
+import type { ApiUsageItem } from "@/lib/types";
 
-const MONTHLY_LIMIT = 50;
+const providerMeta: Record<ApiUsageItem["provider"], { label: string; Icon: React.ElementType }> = {
+  anthropic: { label: "Anthropic Claude", Icon: IconRobot },
+  google: { label: "Google Gemini", Icon: IconBrandGoogle },
+  voyage: { label: "Voyage AI", Icon: IconUser },
+};
 
-const apiUsage = [
-  { provider: "Anthropic Claude", icon: IconRobot, calls: 18, tokens: "142k", cost: "$1.42" },
-  { provider: "Google Gemini", icon: IconBrandGoogle, calls: 72, tokens: "680k", cost: "$0.68" },
-  { provider: "Voyage AI", icon: IconUser, calls: 36, tokens: "—", cost: "$0.18" },
-];
+function formatTokens(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(0)}k`;
+  return String(n);
+}
+
+function formatCost(cents: number): string {
+  return `$${(cents / 100).toFixed(2)}`;
+}
+
+function getMonthLabel(): string {
+  return new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
 
 export default async function SettingsPage() {
-  const session = await getSession();
+  const [session, usage, repos] = await Promise.all([
+    getSession(),
+    getUsage(),
+    listRepositories(),
+  ]);
+
   const user = session!.user;
-  const stats = getReviewStats();
-  const usagePct = Math.min(100, Math.round((stats.thisMonthReviews / MONTHLY_LIMIT) * 100));
+  const usagePct = Math.min(100, Math.round((usage.thisMonthReviews / usage.monthlyLimit) * 100));
 
   return (
     <>
@@ -38,19 +55,21 @@ export default async function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-sm font-medium">Usage this month</CardTitle>
-            <CardDescription>May 2026</CardDescription>
+            <CardDescription>{getMonthLabel()}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <div className="mb-2 flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">PR reviews</span>
                 <span className="font-mono">
-                  <span className="font-semibold">{stats.thisMonthReviews}</span>
-                  <span className="text-muted-foreground"> / {MONTHLY_LIMIT}</span>
+                  <span className="font-semibold">{usage.thisMonthReviews}</span>
+                  <span className="text-muted-foreground"> / {usage.monthlyLimit}</span>
                 </span>
               </div>
               <Progress value={usagePct} className="h-2" />
-              <p className="mt-1 text-xs text-muted-foreground">{MONTHLY_LIMIT - stats.thisMonthReviews} reviews remaining this month</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {usage.monthlyLimit - usage.thisMonthReviews} reviews remaining this month
+              </p>
             </div>
 
             <Separator />
@@ -68,19 +87,24 @@ export default async function SettingsPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {apiUsage.map((row) => (
-                      <TableRow key={row.provider}>
-                        <TableCell>
-                          <div className="flex items-center gap-2 text-sm">
-                            <row.icon size={14} className="text-muted-foreground" />
-                            {row.provider}
-                          </div>
-                        </TableCell>
-                        <TableCell className="font-mono text-xs">{row.calls}</TableCell>
-                        <TableCell className="font-mono text-xs">{row.tokens}</TableCell>
-                        <TableCell className="font-mono text-xs">{row.cost}</TableCell>
-                      </TableRow>
-                    ))}
+                    {usage.apiUsage.map((row) => {
+                      const meta = providerMeta[row.provider];
+                      return (
+                        <TableRow key={row.provider}>
+                          <TableCell>
+                            <div className="flex items-center gap-2 text-sm">
+                              <meta.Icon size={14} className="text-muted-foreground" />
+                              {meta.label}
+                            </div>
+                          </TableCell>
+                          <TableCell className="font-mono text-xs">{row.calls}</TableCell>
+                          <TableCell className="font-mono text-xs">
+                            {formatTokens(row.inputTokens + row.outputTokens)}
+                          </TableCell>
+                          <TableCell className="font-mono text-xs">{formatCost(row.costCents)}</TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </div>
@@ -114,11 +138,7 @@ export default async function SettingsPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Repositories</span>
-                <span className="font-mono">3</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Total reviews</span>
-                <span className="font-mono">{stats.totalReviews}</span>
+                <span className="font-mono">{repos.length}</span>
               </div>
             </div>
 

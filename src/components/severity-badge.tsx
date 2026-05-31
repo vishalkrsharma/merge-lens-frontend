@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { Severity } from "@/data/mock";
+import type { Severity } from "@/lib/types";
 
 interface SeverityBadgeProps {
   severity: Severity;

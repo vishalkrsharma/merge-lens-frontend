@@ -17,7 +17,8 @@ import { ReviewsAreaChart } from "@/components/charts/reviews-area-chart";
 import { PageHeader } from "@/components/page-header";
 import { ReviewStatusBadge } from "@/components/review-status-badge";
 import { StatCard } from "@/components/stat-card";
-import { MOCK_FINDINGS, MOCK_REVIEWS, getReviewStats, type AgentType } from "@/data/mock";
+import { getStats, listReviews } from "@/lib/api";
+import type { AgentType } from "@/lib/types";
 
 function formatDuration(ms: number) {
   if (ms === 0) return "—";
@@ -29,9 +30,11 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-export default function DashboardPage() {
-  const stats = getReviewStats();
-  const recentReviews = MOCK_REVIEWS.slice(0, 5);
+export default async function DashboardPage() {
+  const [stats, { data: recentReviews }] = await Promise.all([
+    getStats(),
+    listReviews({ limit: "5" }),
+  ]);
 
   const agentChartData = (["bug", "security", "performance", "style"] as AgentType[]).map((agent) => ({
     agent,
@@ -57,11 +60,11 @@ export default function DashboardPage() {
           title="Total Findings"
           value={stats.totalFindings}
           icon={<IconAlertTriangle size={16} />}
-          delta={`${stats.findingsBySeverity.low} low · ${stats.findingsBySeverity.medium} med · ${stats.findingsBySeverity.high} high`}
+          delta={`${stats.findingsBySeverity.low ?? 0} low · ${stats.findingsBySeverity.medium ?? 0} med · ${stats.findingsBySeverity.high ?? 0} high`}
         />
         <StatCard
           title="High Severity"
-          value={stats.findingsBySeverity.high}
+          value={stats.findingsBySeverity.high ?? 0}
           icon={<IconAlertOctagon size={16} />}
           className="border-red-500/20"
         />
@@ -113,33 +116,27 @@ export default function DashboardPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {recentReviews.map((r) => {
-                const findings = MOCK_FINDINGS.filter((f) => f.reviewId === r.id);
-                const high = findings.filter((f) => f.severity === "high").length;
-                const medium = findings.filter((f) => f.severity === "medium").length;
-                const low = findings.filter((f) => f.severity === "low").length;
-                return (
-                  <TableRow key={r.id} className="cursor-pointer">
-                    <TableCell className="font-mono text-xs">{r.owner}/{r.repo}</TableCell>
-                    <TableCell className="font-mono text-xs">#{r.pullNumber}</TableCell>
-                    <TableCell className="max-w-56 truncate text-sm">
-                      <Link href={`/reviews/${r.id}`} className="hover:underline">{r.prTitle}</Link>
-                    </TableCell>
-                    <TableCell><ReviewStatusBadge status={r.status} /></TableCell>
-                    <TableCell>
-                      <span className="font-mono text-xs">
-                        <span className="text-red-400">{high}H</span>
-                        {" · "}
-                        <span className="text-amber-400">{medium}M</span>
-                        {" · "}
-                        <span className="text-green-400">{low}L</span>
-                      </span>
-                    </TableCell>
-                    <TableCell className="font-mono text-xs">{formatDuration(r.durationMs)}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground">{formatDate(r.createdAt)}</TableCell>
-                  </TableRow>
-                );
-              })}
+              {recentReviews.map((r) => (
+                <TableRow key={r.id}>
+                  <TableCell className="font-mono text-xs">{r.owner}/{r.repo}</TableCell>
+                  <TableCell className="font-mono text-xs">#{r.pullNumber}</TableCell>
+                  <TableCell className="max-w-56 truncate text-sm">
+                    <Link href={`/reviews/${r.id}`} className="hover:underline">{r.prTitle}</Link>
+                  </TableCell>
+                  <TableCell><ReviewStatusBadge status={r.status} /></TableCell>
+                  <TableCell>
+                    <span className="font-mono text-xs">
+                      <span className="text-red-400">{r.findingCounts.high}H</span>
+                      {" · "}
+                      <span className="text-amber-400">{r.findingCounts.medium}M</span>
+                      {" · "}
+                      <span className="text-green-400">{r.findingCounts.low}L</span>
+                    </span>
+                  </TableCell>
+                  <TableCell className="font-mono text-xs">{formatDuration(r.durationMs)}</TableCell>
+                  <TableCell className="text-xs text-muted-foreground">{formatDate(r.createdAt)}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>

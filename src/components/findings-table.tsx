@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { SeverityBadge } from "@/components/severity-badge";
 import { AgentBadge } from "@/components/agent-badge";
-import type { Finding, Severity } from "@/data/mock";
+import type { Finding, Severity } from "@/lib/types";
 
 interface FindingsTableProps {
   findings: Finding[];
