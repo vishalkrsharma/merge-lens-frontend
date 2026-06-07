@@ -83,3 +83,18 @@ export interface UsageStats {
   monthlyLimit: number;
   apiUsage: ApiUsageItem[];
 }
+
+export interface GithubRepo {
+  id: number;
+  name: string;
+  fullName: string;
+  private: boolean;
+  description: string | null;
+}
+
+export interface SyncResult {
+  synced: true;
+  removed: string[];
+  accessible: number;
+  repositorySelection?: 'all' | 'selected';
+}

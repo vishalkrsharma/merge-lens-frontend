@@ -1,15 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AgentBadge } from "@/components/agent-badge";
-import { FindingsTable } from "@/components/findings-table";
 import { PageHeader } from "@/components/page-header";
 import { ReviewStatusBadge } from "@/components/review-status-badge";
 import { getReview } from "@/lib/api";
-import type { AgentType } from "@/lib/types";
+import { FindingsTabs } from "./_components/findings-tabs";
+import { ReviewSummaryCard } from "./_components/review-summary";
 
 function formatDuration(ms: number) {
   if (ms === 0) return "—";
@@ -18,19 +14,14 @@ function formatDuration(ms: number) {
 
 function formatDate(iso: string) {
   if (!iso) return "—";
-  return new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  return new Date(iso).toLocaleString("en-US", {
+    month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit",
+  });
 }
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
-
-const agentSummaryKeys = [
-  { agent: "bug" as AgentType, key: "bugSummary" as const, label: "Bug" },
-  { agent: "security" as AgentType, key: "securitySummary" as const, label: "Security" },
-  { agent: "performance" as AgentType, key: "performanceSummary" as const, label: "Performance" },
-  { agent: "style" as AgentType, key: "styleSummary" as const, label: "Style" },
-];
 
 export default async function ReviewDetailPage({ params }: PageProps) {
   const { id } = await params;
@@ -43,14 +34,6 @@ export default async function ReviewDetailPage({ params }: PageProps) {
   }
 
   const { findings, summary } = review;
-
-  const tabs = [
-    { value: "all", label: "All", findings },
-    { value: "bug", label: "Bug", findings: findings.filter((f) => f.agent === "bug") },
-    { value: "security", label: "Security", findings: findings.filter((f) => f.agent === "security") },
-    { value: "performance", label: "Performance", findings: findings.filter((f) => f.agent === "performance") },
-    { value: "style", label: "Style", findings: findings.filter((f) => f.agent === "style") },
-  ];
 
   return (
     <>
@@ -80,42 +63,9 @@ export default async function ReviewDetailPage({ params }: PageProps) {
         </span>
       </div>
 
-      {summary && (
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Summary</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground leading-relaxed">{summary.overallSummary}</p>
-            <Separator />
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {agentSummaryKeys.map(({ agent, key, label }) => (
-                <div key={agent}>
-                  <AgentBadge agent={agent} showLabel className="mb-1" />
-                  <p className="text-xs text-muted-foreground leading-relaxed">{summary[key]}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {summary && <ReviewSummaryCard summary={summary} />}
 
-      <Tabs defaultValue="all">
-        <TabsList className="mb-4">
-          {tabs.map((t) => (
-            <TabsTrigger key={t.value} value={t.value} className="gap-1.5">
-              {t.value !== "all" && <AgentBadge agent={t.value as AgentType} showLabel={false} />}
-              {t.label}
-              <span className="ml-1 font-mono text-xs opacity-60">({t.findings.length})</span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {tabs.map((t) => (
-          <TabsContent key={t.value} value={t.value}>
-            <FindingsTable findings={t.findings} />
-          </TabsContent>
-        ))}
-      </Tabs>
+      <FindingsTabs findings={findings} />
     </>
   );
 }

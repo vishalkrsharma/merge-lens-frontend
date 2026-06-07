@@ -26,7 +26,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { signOut, useSession } from '@/lib/auth-client';
+import { signOut } from '@/lib/auth-client';
+
+interface SidebarUser {
+  name: string;
+  email: string;
+  image?: string | null;
+}
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
@@ -35,11 +41,14 @@ const navItems = [
   { href: '/repositories', label: 'Repositories', icon: IconBuildingWarehouse },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ user }: { user: SidebarUser }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { data: session } = useSession();
-  const user = session?.user;
+
+  const initials = user.name
+    .split(' ')
+    .map((n) => n[0])
+    .join('');
 
   return (
     <Sidebar>
@@ -76,7 +85,6 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
       </SidebarContent>
 
       <SidebarFooter className='border-t border-sidebar-border p-3'>
@@ -91,19 +99,14 @@ export function AppSidebar() {
           >
             <Avatar className='h-7 w-7'>
               <AvatarImage
-                src={user?.image ?? undefined}
-                alt={user?.name ?? ''}
+                src={user.image ?? undefined}
+                alt={user.name}
               />
-              <AvatarFallback className='text-xs'>
-                {user?.name
-                  ?.split(' ')
-                  .map((n) => n[0])
-                  .join('') ?? '?'}
-              </AvatarFallback>
+              <AvatarFallback className='text-xs'>{initials}</AvatarFallback>
             </Avatar>
             <div className='min-w-0 flex flex-col items-start text-left'>
-              <span className='w-full truncate font-medium leading-none'>{user?.name ?? 'User'}</span>
-              <span className='mt-0.5 w-full truncate text-xs text-muted-foreground'>{user?.email ?? ''}</span>
+              <span className='w-full truncate font-medium leading-none'>{user.name}</span>
+              <span className='mt-0.5 w-full truncate text-xs text-muted-foreground'>{user.email}</span>
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -122,7 +125,7 @@ export function AppSidebar() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               variant='destructive'
-              onClick={() => signOut({ fetchOptions: { onSuccess: () => router.push("/auth/signin") } })}
+              onClick={() => signOut({ fetchOptions: { onSuccess: () => router.push('/') } })}
             >
               <IconLogout size={14} />
               Sign out

@@ -1,8 +1,6 @@
-import Link from 'next/link';
-import { IconBolt, IconBrandGithub, IconBug, IconGitBranch, IconLock, IconSparkles, IconTextScanAi, IconZoomCode } from '@tabler/icons-react';
-import { buttonVariants } from '@/components/ui/button';
+import { IconBolt, IconBug, IconLock, IconSparkles, IconTextScanAi } from '@tabler/icons-react';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { GitHubSignInButton } from '@/app/_components/github-sign-in-button';
 const features = [
   {
     icon: IconBug,
@@ -44,19 +42,18 @@ export default function LandingPage() {
             <span className='font-mono font-semibold'>MergeLens</span>
           </div>
           <div className='flex items-center gap-3'>
-            <Link
-              href="/auth/signin"
+            {/* <Link
+              href='/auth/signin'
               className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
             >
               Sign in
-            </Link>
-            <Link
-              href="/auth/signin"
-              className={cn(buttonVariants({ size: 'sm' }), 'gap-2')}
+            </Link> */}
+            <GitHubSignInButton
+              size='sm'
+              iconSize={14}
             >
-              <IconBrandGithub size={14} />
               Get started
-            </Link>
+            </GitHubSignInButton>
           </div>
         </div>
       </header>
@@ -77,19 +74,8 @@ export default function LandingPage() {
             your team reviews the code.
           </p>
           <div className='mt-8 flex items-center gap-3'>
-            <Link
-              href="/auth/signin"
-              className={cn(buttonVariants(), 'gap-2')}
-            >
-              <IconBrandGithub size={16} />
-              Sign in with GitHub
-            </Link>
-            <Link
-              href='/dashboard'
-              className={cn(buttonVariants({ variant: 'outline' }))}
-            >
-              View dashboard
-            </Link>
+            <GitHubSignInButton />
+            {/* <GitHubSignInButton variant='outline'>View dashboard</GitHubSignInButton> */}
           </div>
         </section>
 

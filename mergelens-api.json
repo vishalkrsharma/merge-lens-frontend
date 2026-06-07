@@ -1,6 +1,20 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/api/metrics": {
+      "get": {
+        "operationId": "MetricsController_metrics",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Metrics"
+        ]
+      }
+    },
     "/api/health": {
       "get": {
         "operationId": "HealthController_check",
@@ -183,239 +197,6 @@
         ]
       }
     },
-    "/api/metrics": {
-      "get": {
-        "operationId": "MetricsController_metrics",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Metrics"
-        ]
-      }
-    },
-    "/api/stats": {
-      "get": {
-        "operationId": "StatsController_getStats",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Aggregated stats including review counts, findings by agent/severity, and time-series data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "totalReviews": {
-                      "type": "number"
-                    },
-                    "totalFindings": {
-                      "type": "number"
-                    },
-                    "findingsByAgent": {
-                      "type": "object",
-                      "properties": {
-                        "bug": {
-                          "type": "number"
-                        },
-                        "security": {
-                          "type": "number"
-                        },
-                        "performance": {
-                          "type": "number"
-                        },
-                        "style": {
-                          "type": "number"
-                        }
-                      }
-                    },
-                    "findingsBySeverity": {
-                      "type": "object",
-                      "properties": {
-                        "low": {
-                          "type": "number"
-                        },
-                        "medium": {
-                          "type": "number"
-                        },
-                        "high": {
-                          "type": "number"
-                        }
-                      }
-                    },
-                    "reviewsOverTime": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "date": {
-                            "type": "string",
-                            "example": "2026-05-01"
-                          },
-                          "count": {
-                            "type": "number"
-                          }
-                        }
-                      }
-                    },
-                    "avgDurationMs": {
-                      "type": "number"
-                    },
-                    "thisMonthReviews": {
-                      "type": "number"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthenticated"
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "summary": "Get dashboard statistics for the authenticated user",
-        "tags": [
-          "Stats"
-        ]
-      }
-    },
-    "/api/reviews": {
-      "get": {
-        "operationId": "ReviewsController_listReviews",
-        "parameters": [
-          {
-            "name": "q",
-            "required": false,
-            "in": "query",
-            "description": "Substring match on PR title",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "repo",
-            "required": false,
-            "in": "query",
-            "description": "Filter by owner/repo (omit or \"all\" for no filter)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "status",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "enum": [
-                "pending",
-                "running",
-                "completed",
-                "failed",
-                "all"
-              ],
-              "type": "string"
-            }
-          },
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "description": "Page number (1-based)",
-            "schema": {
-              "example": 1,
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "description": "Items per page",
-            "schema": {
-              "example": 20,
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Paginated list of reviews. Each item includes computed findingCounts.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    },
-                    "total": {
-                      "type": "number"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthenticated"
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "summary": "List reviews with optional filters and pagination",
-        "tags": [
-          "Reviews"
-        ]
-      }
-    },
-    "/api/reviews/{id}": {
-      "get": {
-        "operationId": "ReviewsController_getReview",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "description": "Review ID",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Review detail including findings array and summary (null if not yet completed)"
-          },
-          "401": {
-            "description": "Unauthenticated"
-          },
-          "404": {
-            "description": "Review not found or not owned by the user"
-          }
-        },
-        "security": [
-          {
-            "cookie": []
-          }
-        ],
-        "summary": "Get a single review with its findings and summary",
-        "tags": [
-          "Reviews"
-        ]
-      }
-    },
     "/api/findings/hotspots": {
       "get": {
         "operationId": "FindingsController_getHotspots",
@@ -595,9 +376,144 @@
         "tags": [
           "Repositories"
         ]
+      },
+      "post": {
+        "operationId": "RepositoriesController_addRepository",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "repoId",
+                  "fullName"
+                ],
+                "properties": {
+                  "repoId": {
+                    "type": "number",
+                    "description": "GitHub's numeric repository ID",
+                    "example": 123456789
+                  },
+                  "fullName": {
+                    "type": "string",
+                    "description": "owner/repo",
+                    "example": "octocat/hello-world"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Repository added and synced to MergeLens"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "GitHub App installation not found"
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "Add a GitHub repository to MergeLens",
+        "tags": [
+          "Repositories"
+        ]
+      }
+    },
+    "/api/repositories/available": {
+      "get": {
+        "operationId": "RepositoriesController_listAvailableRepositories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Array of GitHub repositories available to add"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "GitHub account not linked"
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "List GitHub repos owned by the user that are not yet added to MergeLens",
+        "tags": [
+          "Repositories"
+        ]
+      }
+    },
+    "/api/repositories/sync": {
+      "post": {
+        "operationId": "RepositoriesController_syncRepositories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Sync result with removed repo names"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "GitHub App installation not found"
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "Sync repositories with GitHub App installation, removing any that lost access",
+        "tags": [
+          "Repositories"
+        ]
       }
     },
     "/api/repositories/{id}": {
+      "delete": {
+        "operationId": "RepositoriesController_deleteRepository",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Repository ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Repository object"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "Repository not found or not owned by the user"
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "Remove a repository from MergeLens",
+        "tags": [
+          "Repositories"
+        ]
+      },
       "patch": {
         "operationId": "RepositoriesController_updateRepository",
         "parameters": [
@@ -669,6 +585,136 @@
         ]
       }
     },
+    "/api/reviews": {
+      "get": {
+        "operationId": "ReviewsController_listReviews",
+        "parameters": [
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "description": "Substring match on PR title",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "repo",
+            "required": false,
+            "in": "query",
+            "description": "Filter by owner/repo (omit or \"all\" for no filter)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "enum": [
+                "pending",
+                "running",
+                "completed",
+                "failed",
+                "all"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (1-based)",
+            "schema": {
+              "example": 1,
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Items per page",
+            "schema": {
+              "example": 20,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of reviews. Each item includes computed findingCounts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "total": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "List reviews with optional filters and pagination",
+        "tags": [
+          "Reviews"
+        ]
+      }
+    },
+    "/api/reviews/{id}": {
+      "get": {
+        "operationId": "ReviewsController_getReview",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Review ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review detail including findings array and summary (null if not yet completed)"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "404": {
+            "description": "Review not found or not owned by the user"
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "Get a single review with its findings and summary",
+        "tags": [
+          "Reviews"
+        ]
+      }
+    },
     "/api/settings/usage": {
       "get": {
         "operationId": "SettingsController_getUsage",
@@ -732,6 +778,95 @@
         "summary": "Current-month review usage and per-provider API cost breakdown",
         "tags": [
           "Settings"
+        ]
+      }
+    },
+    "/api/stats": {
+      "get": {
+        "operationId": "StatsController_getStats",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Aggregated stats including review counts, findings by agent/severity, and time-series data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "totalReviews": {
+                      "type": "number"
+                    },
+                    "totalFindings": {
+                      "type": "number"
+                    },
+                    "findingsByAgent": {
+                      "type": "object",
+                      "properties": {
+                        "bug": {
+                          "type": "number"
+                        },
+                        "security": {
+                          "type": "number"
+                        },
+                        "performance": {
+                          "type": "number"
+                        },
+                        "style": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "findingsBySeverity": {
+                      "type": "object",
+                      "properties": {
+                        "low": {
+                          "type": "number"
+                        },
+                        "medium": {
+                          "type": "number"
+                        },
+                        "high": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "reviewsOverTime": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "date": {
+                            "type": "string",
+                            "example": "2026-05-01"
+                          },
+                          "count": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "avgDurationMs": {
+                      "type": "number"
+                    },
+                    "thisMonthReviews": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated"
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "Get dashboard statistics for the authenticated user",
+        "tags": [
+          "Stats"
         ]
       }
     },
@@ -5892,6 +6027,11 @@
             "type": "string",
             "format": "date-time",
             "default": "Generated at runtime"
+          },
+          "hasGithubApp": {
+            "type": "boolean",
+            "default": false,
+            "readOnly": true
           }
         },
         "required": [

@@ -32,7 +32,7 @@ npm run format   # biome format --write
 src/
   app/
     (app)/          # authenticated route group
-      layout.tsx    # redirects to /auth/signin if no session
+      layout.tsx    # redirects to / if no session
       dashboard/
       findings/
       repositories/
@@ -58,12 +58,15 @@ src/
 ## Key conventions
 
 ### Next.js 16 specifics
+
 - `params` and `searchParams` in page/layout props are **Promises** — always `await` them: `const { id } = await params`
 - Dynamic route segments: `app/(app)/reviews/[id]/page.tsx`
 - Server Components by default; add `'use client'` only when needed (event handlers, hooks, auth-client)
 
 ### Base UI render prop
+
 shadcn components use Base UI's `render` prop instead of `asChild`:
+
 ```tsx
 // correct
 <SidebarMenuButton render={<Link href="/foo" />}>Label</SidebarMenuButton>
@@ -72,7 +75,9 @@ shadcn components use Base UI's `render` prop instead of `asChild`:
 ```
 
 ### Forms
+
 Every form must use react-hook-form + zod + shadcn Form components:
+
 ```tsx
 const schema = z.object({ email: z.string().email(), password: z.string().min(8) });
 const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
@@ -80,12 +85,14 @@ const form = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) });
 ```
 
 ### Auth
+
 - Client components: import from `@/lib/auth-client`
 - Server components / layouts: use `getSession()` from `@/lib/auth.ts`
 - Unauthenticated redirect target: `/auth/signin`
 - Auth schemas live in `@/lib/auth-schema` — import `signInSchema`/`signUpSchema` and their inferred types from there
 
 ### Styling
+
 - Dark-only app — do not add light-mode variants
 - Font variables: `--font-sans` (Inter), `--font-mono` (JetBrains Mono)
 - `cn()` from `@/lib/utils` for conditional classes

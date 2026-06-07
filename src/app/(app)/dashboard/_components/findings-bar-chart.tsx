@@ -8,10 +8,6 @@ interface DataPoint {
   count: number;
 }
 
-interface FindingsBarChartProps {
-  data: DataPoint[];
-}
-
 const agentLabels: Record<AgentType, string> = {
   bug: "Bug",
   security: "Security",
@@ -26,7 +22,7 @@ const agentColors: Record<AgentType, string> = {
   style: "var(--color-chart-4)",
 };
 
-export function FindingsBarChart({ data }: FindingsBarChartProps) {
+export function FindingsBarChart({ data }: { data: DataPoint[] }) {
   const displayData = data.map((d) => ({ ...d, label: agentLabels[d.agent] }));
 
   return (

@@ -12,22 +12,15 @@ import {
 } from "@/components/ui/select";
 import type { Repository } from "@/lib/types";
 
-interface FindingsFilterBarProps {
-  repos: Repository[];
-}
-
-export function FindingsFilterBar({ repos }: FindingsFilterBarProps) {
+export function FindingsFilterBar({ repos }: { repos: Repository[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const update = useCallback(
     (key: string, value: string | null) => {
       const params = new URLSearchParams(searchParams.toString());
-      if (value && value !== "all") {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
+      if (value && value !== "all") params.set(key, value);
+      else params.delete(key);
       router.push(`?${params.toString()}`);
     },
     [router, searchParams],

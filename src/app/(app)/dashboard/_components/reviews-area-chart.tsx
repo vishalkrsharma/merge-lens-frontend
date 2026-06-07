@@ -7,19 +7,10 @@ interface DataPoint {
   count: number;
 }
 
-interface ReviewsAreaChartProps {
-  data: DataPoint[];
-}
-
-export function ReviewsAreaChart({ data }: ReviewsAreaChartProps) {
-  const displayData = data.map((d) => ({
-    ...d,
-    label: d.date.slice(5), // MM-DD
-  }));
-
-  // Show every 5th label to avoid crowding
+export function ReviewsAreaChart({ data }: { data: DataPoint[] }) {
+  const displayData = data.map((d) => ({ ...d, label: d.date.slice(5) }));
   const tickFormatter = (_: string, index: number) =>
-    index % 5 === 0 ? displayData[index]?.label ?? "" : "";
+    index % 5 === 0 ? (displayData[index]?.label ?? "") : "";
 
   return (
     <ResponsiveContainer width="100%" height={220}>

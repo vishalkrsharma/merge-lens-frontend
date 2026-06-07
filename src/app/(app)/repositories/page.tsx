@@ -1,21 +1,35 @@
 import { PageHeader } from "@/components/page-header";
-import { RepoCard } from "@/components/repo-card";
-import { listRepositories } from "@/lib/api";
+import { listAvailableRepositories, listRepositories, syncRepositories } from "@/lib/api";
+import { ReposList } from "./_components/repos-list";
 
 export default async function RepositoriesPage() {
-  const repos = await listRepositories();
+  const [repos, sync, available] = await Promise.all([
+    listRepositories(),
+    syncRepositories().catch(() => null),
+    listAvailableRepositories().catch(() => []),
+  ]);
+
+  const removedSet = new Set(sync?.removed ?? []);
+  const connectedRepos =
+    removedSet.size > 0
+      ? repos.filter((r) => !removedSet.has(`${r.owner}/${r.repo}`))
+      : repos;
+
+  const repositorySelection = sync?.repositorySelection ?? 'selected';
+  const installationId = connectedRepos[0]?.installationId;
 
   return (
     <>
       <PageHeader
-        title="Repositories"
-        description="Configure MergeLens for each installed repository"
+        title="GitHub Repositories"
+        description="Manage and configure repositories connected to MergeLens"
       />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {repos.map((repo) => (
-          <RepoCard key={repo.id} repo={repo} />
-        ))}
-      </div>
+      <ReposList
+        connectedRepos={connectedRepos}
+        availableRepos={available}
+        repositorySelection={repositorySelection}
+        installationId={installationId}
+      />
     </>
   );
 }

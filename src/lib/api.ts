@@ -1,49 +1,39 @@
-import { headers } from "next/headers";
-import type { Finding, Repository, Review, ReviewDetail, Stats, UsageStats } from "./types";
-
-const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:8080";
-
-async function serverFetch<T>(path: string): Promise<T> {
-  const headersList = await headers();
-  const cookie = headersList.get("cookie") ?? "";
-
-  const res = await fetch(`${BACKEND_URL}${path}`, {
-    headers: { cookie },
-    cache: "no-store",
-  });
-
-  if (!res.ok) throw new Error(`API ${res.status}: ${path}`);
-  return res.json() as Promise<T>;
-}
+import type { Finding, GithubRepo, Repository, Review, ReviewDetail, Stats, SyncResult, UsageStats } from './types';
+import { serverClient } from './server-client';
 
 function buildQS(params: Record<string, string | undefined>): string {
   const qs = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
-    if (value && value !== "all") qs.set(key, value);
+    if (value && value !== 'all') qs.set(key, value);
   }
   const str = qs.toString();
-  return str ? `?${str}` : "";
+  return str ? `?${str}` : '';
 }
 
-export function getStats(): Promise<Stats> {
-  return serverFetch("/api/stats");
+export async function getStats(): Promise<Stats> {
+  const { data } = await serverClient.get<Stats>('/stats');
+  return data;
 }
 
-export function listReviews(params?: {
+export async function listReviews(params?: {
   q?: string;
   repo?: string;
   status?: string;
   page?: string;
   limit?: string;
 }): Promise<{ data: Review[]; total: number }> {
-  return serverFetch(`/api/reviews${buildQS(params ?? {})}`);
+  const { data } = await serverClient.get<{ data: Review[]; total: number }>(
+    `/reviews${buildQS(params ?? {})}`,
+  );
+  return data;
 }
 
-export function getReview(id: string): Promise<ReviewDetail> {
-  return serverFetch(`/api/reviews/${id}`);
+export async function getReview(id: string): Promise<ReviewDetail> {
+  const { data } = await serverClient.get<ReviewDetail>(`/reviews/${id}`);
+  return data;
 }
 
-export function listFindings(params?: {
+export async function listFindings(params?: {
   agent?: string;
   severity?: string;
   repo?: string;
@@ -51,17 +41,35 @@ export function listFindings(params?: {
   page?: string;
   limit?: string;
 }): Promise<{ data: Finding[]; total: number }> {
-  return serverFetch(`/api/findings${buildQS(params ?? {})}`);
+  const { data } = await serverClient.get<{ data: Finding[]; total: number }>(
+    `/findings${buildQS(params ?? {})}`,
+  );
+  return data;
 }
 
-export function getHotspots(limit = 5): Promise<{ file: string; count: number }[]> {
-  return serverFetch(`/api/findings/hotspots?limit=${limit}`);
+export async function getHotspots(limit = 5): Promise<{ file: string; count: number }[]> {
+  const { data } = await serverClient.get<{ file: string; count: number }[]>(
+    `/findings/hotspots?limit=${limit}`,
+  );
+  return data;
 }
 
-export function listRepositories(): Promise<Repository[]> {
-  return serverFetch("/api/repositories");
+export async function listRepositories(): Promise<Repository[]> {
+  const { data } = await serverClient.get<Repository[]>('/repositories');
+  return data;
 }
 
-export function getUsage(): Promise<UsageStats> {
-  return serverFetch("/api/settings/usage");
+export async function listAvailableRepositories(): Promise<GithubRepo[]> {
+  const { data } = await serverClient.get<GithubRepo[]>('/repositories/available');
+  return data;
+}
+
+export async function syncRepositories(): Promise<SyncResult> {
+  const { data } = await serverClient.post<SyncResult>('/repositories/sync');
+  return data;
+}
+
+export async function getUsage(): Promise<UsageStats> {
+  const { data } = await serverClient.get<UsageStats>('/settings/usage');
+  return data;
 }
