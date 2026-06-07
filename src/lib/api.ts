@@ -1,16 +1,16 @@
-import { serverClient } from "./server-client";
+import { serverClient } from './server-client';
 
 function buildQS(params: Record<string, string | undefined>): string {
   const qs = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
-    if (value && value !== "all") qs.set(key, value);
+    if (value && value !== 'all') qs.set(key, value);
   }
   const str = qs.toString();
-  return str ? `?${str}` : "";
+  return str ? `?${str}` : '';
 }
 
 export async function getStats(): Promise<Stats> {
-  const { data } = await serverClient.get<Stats>("/stats");
+  const { data } = await serverClient.get<Stats>('/stats');
   return data;
 }
 
@@ -56,23 +56,23 @@ export async function getHotspots(
 }
 
 export async function listRepositories(): Promise<Repository[]> {
-  const { data } = await serverClient.get<Repository[]>("/repositories");
+  const { data } = await serverClient.get<Repository[]>('/repositories');
   return data;
 }
 
 export async function listAvailableRepositories(): Promise<GithubRepo[]> {
   const { data } = await serverClient.get<GithubRepo[]>(
-    "/repositories/available",
+    '/repositories/available',
   );
   return data;
 }
 
 export async function syncRepositories(): Promise<SyncResult> {
-  const { data } = await serverClient.post<SyncResult>("/repositories/sync");
+  const { data } = await serverClient.post<SyncResult>('/repositories/sync');
   return data;
 }
 
 export async function getUsage(): Promise<UsageStats> {
-  const { data } = await serverClient.get<UsageStats>("/settings/usage");
+  const { data } = await serverClient.get<UsageStats>('/settings/usage');
   return data;
 }

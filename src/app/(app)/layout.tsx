@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation";
-import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { getSession } from "@/lib/auth";
+import { redirect } from 'next/navigation';
+import { AppSidebar } from '@/components/app-sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { getSession } from '@/lib/auth';
 
 export default async function AppLayout({
   children,
@@ -9,13 +9,13 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
-  if (!session) redirect("/");
+  if (!session) redirect('/');
 
   return (
     <SidebarProvider>
       <AppSidebar user={session.user} />
       <SidebarInset>
-        <div className="flex flex-col gap-0 p-6">{children}</div>
+        <div className='flex flex-col gap-0 p-6'>{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

@@ -1,6 +1,6 @@
-declare type ReviewStatus = "pending" | "running" | "completed" | "failed";
-declare type AgentType = "bug" | "security" | "performance" | "style";
-declare type Severity = "low" | "medium" | "high";
+declare type ReviewStatus = 'pending' | 'running' | 'completed' | 'failed';
+declare type AgentType = 'bug' | 'security' | 'performance' | 'style';
+declare type Severity = 'low' | 'medium' | 'high';
 
 declare interface FindingCounts {
   high: number;
@@ -72,7 +72,7 @@ declare interface Stats {
 }
 
 declare interface ApiUsageItem {
-  provider: "anthropic" | "google" | "voyage";
+  provider: 'anthropic' | 'google' | 'voyage';
   calls: number;
   inputTokens: number;
   outputTokens: number;
@@ -97,5 +97,5 @@ declare interface SyncResult {
   synced: true;
   removed: string[];
   accessible: number;
-  repositorySelection?: "all" | "selected";
+  repositorySelection?: 'all' | 'selected';
 }

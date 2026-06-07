@@ -42,8 +42,8 @@ declare interface AccountCardProps {
 }
 
 declare interface GitHubSignInButtonProps {
-  size?: "default" | "sm" | "lg" | "icon";
-  variant?: "default" | "outline" | "ghost";
+  size?: 'default' | 'sm' | 'lg' | 'icon';
+  variant?: 'default' | 'outline' | 'ghost';
   className?: string;
   children?: React.ReactNode;
   iconSize?: number;

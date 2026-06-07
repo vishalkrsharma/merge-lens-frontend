@@ -1,25 +1,25 @@
-import { IconArrowLeft } from "@tabler/icons-react";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { PageHeader } from "@/components/page-header";
-import { ReviewStatusBadge } from "@/components/review-status-badge";
-import { getReview } from "@/lib/api";
-import { FindingsTabs } from "./_components/findings-tabs";
-import { ReviewSummaryCard } from "./_components/review-summary";
+import { IconArrowLeft } from '@tabler/icons-react';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { PageHeader } from '@/components/page-header';
+import { ReviewStatusBadge } from '@/components/review-status-badge';
+import { getReview } from '@/lib/api';
+import { FindingsTabs } from './_components/findings-tabs';
+import { ReviewSummaryCard } from './_components/review-summary';
 
 function formatDuration(ms: number) {
-  if (ms === 0) return "—";
+  if (ms === 0) return '—';
   return `${(ms / 1000).toFixed(1)}s`;
 }
 
 function formatDate(iso: string) {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+  if (!iso) return '—';
+  return new Date(iso).toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   });
 }
 
@@ -41,10 +41,10 @@ export default async function ReviewDetailPage({ params }: PageProps) {
 
   return (
     <>
-      <div className="mb-4">
+      <div className='mb-4'>
         <Link
-          href="/reviews"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+          href='/reviews'
+          className='inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground'
         >
           <IconArrowLeft size={14} />
           Back to reviews
@@ -57,18 +57,18 @@ export default async function ReviewDetailPage({ params }: PageProps) {
         action={<ReviewStatusBadge status={review.status} />}
       />
 
-      <div className="mb-6 flex flex-wrap gap-4 text-sm text-muted-foreground">
+      <div className='mb-6 flex flex-wrap gap-4 text-sm text-muted-foreground'>
         <span>Started: {formatDate(review.createdAt)}</span>
         {review.completedAt && (
           <span>Completed: {formatDate(review.completedAt)}</span>
         )}
         <span>Duration: {formatDuration(review.durationMs)}</span>
-        <span className="font-mono text-xs">
-          <span className="text-red-400">{review.findingCounts.high}H</span>
-          {" · "}
-          <span className="text-amber-400">{review.findingCounts.medium}M</span>
-          {" · "}
-          <span className="text-green-400">{review.findingCounts.low}L</span>
+        <span className='font-mono text-xs'>
+          <span className='text-red-400'>{review.findingCounts.high}H</span>
+          {' · '}
+          <span className='text-amber-400'>{review.findingCounts.medium}M</span>
+          {' · '}
+          <span className='text-green-400'>{review.findingCounts.low}L</span>
         </span>
       </div>
 

@@ -17,7 +17,13 @@ import { toast } from 'sonner';
 import { AgentBadge } from '@/components/agent-badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { addRepository, toggleRepositoryActive } from '@/lib/actions';
 import { openGithubPopup } from '@/lib/github-popup';
@@ -25,14 +31,20 @@ import { ConfigureSheet } from './configure-sheet';
 
 const AGENT_ORDER: AgentType[] = ['bug', 'security', 'performance', 'style'];
 
-type RepoItem = { kind: 'connected'; repo: Repository } | { kind: 'available'; repo: GithubRepo };
+type RepoItem =
+  | { kind: 'connected'; repo: Repository }
+  | { kind: 'available'; repo: GithubRepo };
 
 function getFullName(item: RepoItem) {
-  return item.kind === 'connected' ? `${item.repo.owner}/${item.repo.repo}` : item.repo.fullName;
+  return item.kind === 'connected'
+    ? `${item.repo.owner}/${item.repo.repo}`
+    : item.repo.fullName;
 }
 
 function getOwner(item: RepoItem) {
-  return item.kind === 'connected' ? item.repo.owner : item.repo.fullName.split('/')[0];
+  return item.kind === 'connected'
+    ? item.repo.owner
+    : item.repo.fullName.split('/')[0];
 }
 
 interface ReposListProps {
@@ -42,11 +54,19 @@ interface ReposListProps {
   installationId?: number;
 }
 
-export function ReposList({ connectedRepos, availableRepos, repositorySelection, installationId }: ReposListProps) {
+export function ReposList({
+  connectedRepos,
+  availableRepos,
+  repositorySelection,
+  installationId,
+}: ReposListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') ?? '');
-  const status = (searchParams.get('status') ?? 'all') as 'all' | 'active' | 'paused';
+  const status = (searchParams.get('status') ?? 'all') as
+    | 'all'
+    | 'active'
+    | 'paused';
   const [addingId, setAddingId] = useState<number | null>(null);
 
   function handleQueryChange(value: string) {
@@ -77,9 +97,19 @@ export function ReposList({ connectedRepos, availableRepos, repositorySelection,
   ];
 
   const statusFiltered =
-    status === 'all' ? allItems : allItems.filter((item) => item.kind === 'connected' && (status === 'active' ? item.repo.isActive : !item.repo.isActive));
+    status === 'all'
+      ? allItems
+      : allItems.filter(
+          (item) =>
+            item.kind === 'connected' &&
+            (status === 'active' ? item.repo.isActive : !item.repo.isActive),
+        );
 
-  const filtered = query ? statusFiltered.filter((item) => getFullName(item).toLowerCase().includes(query.toLowerCase())) : statusFiltered;
+  const filtered = query
+    ? statusFiltered.filter((item) =>
+        getFullName(item).toLowerCase().includes(query.toLowerCase()),
+      )
+    : statusFiltered;
 
   const grouped = new Map<string, RepoItem[]>();
   for (const item of filtered) {
@@ -110,7 +140,9 @@ export function ReposList({ connectedRepos, availableRepos, repositorySelection,
     }
   }
 
-  const configureUrl = installationId ? `https://github.com/settings/installations/${installationId}` : 'https://github.com/settings/installations';
+  const configureUrl = installationId
+    ? `https://github.com/settings/installations/${installationId}`
+    : 'https://github.com/settings/installations';
 
   return (
     <div className='space-y-6'>
@@ -127,10 +159,7 @@ export function ReposList({ connectedRepos, availableRepos, repositorySelection,
             onChange={(e) => handleQueryChange(e.target.value)}
           />
         </div>
-        <Select
-          value={status}
-          onValueChange={setStatus}
-        >
+        <Select value={status} onValueChange={setStatus}>
           <SelectTrigger className='w-32 shrink-0'>
             <SelectValue className='capitalize' />
           </SelectTrigger>
@@ -176,11 +205,23 @@ export function ReposList({ connectedRepos, availableRepos, repositorySelection,
   );
 }
 
-function OwnerGroup({ owner, items, addingId, onAdd }: { owner: string; items: RepoItem[]; addingId: number | null; onAdd: (repo: GithubRepo) => void }) {
+function OwnerGroup({
+  owner,
+  items,
+  addingId,
+  onAdd,
+}: {
+  owner: string;
+  items: RepoItem[];
+  addingId: number | null;
+  onAdd: (repo: GithubRepo) => void;
+}) {
   return (
     <div className='space-y-2'>
       <div className='flex items-center gap-2 px-0.5'>
-        <div className='flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[12px] font-bold text-primary'>{owner[0].toUpperCase()}</div>
+        <div className='flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[12px] font-bold text-primary'>
+          {owner[0].toUpperCase()}
+        </div>
         <span className='text-sm font-medium'>{owner}</span>
         <span className='text-xs text-muted-foreground'>
           {items.length} {items.length === 1 ? 'repository' : 'repositories'}
@@ -189,10 +230,7 @@ function OwnerGroup({ owner, items, addingId, onAdd }: { owner: string; items: R
       <div className='divide-y divide-border overflow-hidden rounded-xl border border-border'>
         {items.map((item) =>
           item.kind === 'connected' ? (
-            <ConnectedRepoRow
-              key={item.repo.id}
-              repo={item.repo}
-            />
+            <ConnectedRepoRow key={item.repo.id} repo={item.repo} />
           ) : (
             <AvailableRepoRow
               key={item.repo.id}
@@ -210,7 +248,9 @@ function OwnerGroup({ owner, items, addingId, onAdd }: { owner: string; items: R
 function ConnectedRepoRow({ repo }: { repo: Repository }) {
   const [isActive, setIsActive] = useState(repo.isActive);
   const [isToggling, setIsToggling] = useState(false);
-  const orderedAgents = AGENT_ORDER.filter((a) => repo.enabledAgents.includes(a));
+  const orderedAgents = AGENT_ORDER.filter((a) =>
+    repo.enabledAgents.includes(a),
+  );
 
   const installedDate = new Date(repo.installedAt).toLocaleDateString('en-US', {
     month: 'short',
@@ -269,21 +309,22 @@ function ConnectedRepoRow({ repo }: { repo: Repository }) {
           <span>Since {installedDate}</span>
           <span>·</span>
           <span>
-            Min severity: <span className='capitalize text-foreground/70'>{repo.severityThreshold}</span>
+            Min severity:{' '}
+            <span className='capitalize text-foreground/70'>
+              {repo.severityThreshold}
+            </span>
           </span>
           <span>·</span>
           {orderedAgents.length > 0 ? (
             <div className='flex items-center gap-1'>
               {orderedAgents.map((agent) => (
-                <AgentBadge
-                  key={agent}
-                  agent={agent}
-                  showLabel={false}
-                />
+                <AgentBadge key={agent} agent={agent} showLabel={false} />
               ))}
             </div>
           ) : (
-            <span className='italic text-muted-foreground/60'>No agents enabled</span>
+            <span className='italic text-muted-foreground/60'>
+              No agents enabled
+            </span>
           )}
         </div>
       </div>
@@ -300,7 +341,15 @@ function ConnectedRepoRow({ repo }: { repo: Repository }) {
   );
 }
 
-function AvailableRepoRow({ repo, addingId, onAdd }: { repo: GithubRepo; addingId: number | null; onAdd: (repo: GithubRepo) => void }) {
+function AvailableRepoRow({
+  repo,
+  addingId,
+  onAdd,
+}: {
+  repo: GithubRepo;
+  addingId: number | null;
+  onAdd: (repo: GithubRepo) => void;
+}) {
   const [, repoName] = repo.fullName.split('/');
 
   return (
@@ -324,13 +373,14 @@ function AvailableRepoRow({ repo, addingId, onAdd }: { repo: GithubRepo; addingI
             />
           </a>
           {repo.private && (
-            <IconLock
-              size={11}
-              className='shrink-0 text-muted-foreground'
-            />
+            <IconLock size={11} className='shrink-0 text-muted-foreground' />
           )}
         </div>
-        {repo.description && <p className='ml-4.75 mt-1 truncate text-xs text-muted-foreground'>{repo.description}</p>}
+        {repo.description && (
+          <p className='ml-4.75 mt-1 truncate text-xs text-muted-foreground'>
+            {repo.description}
+          </p>
+        )}
       </div>
 
       <Button
@@ -341,10 +391,7 @@ function AvailableRepoRow({ repo, addingId, onAdd }: { repo: GithubRepo; addingI
         onClick={() => onAdd(repo)}
       >
         {addingId === repo.id ? (
-          <IconLoader2
-            size={13}
-            className='animate-spin'
-          />
+          <IconLoader2 size={13} className='animate-spin' />
         ) : (
           <>
             <IconPlus size={13} />
@@ -360,23 +407,33 @@ function NoReposState() {
   return (
     <div className='flex flex-col items-center gap-4 rounded-xl border border-dashed border-border py-20 text-center'>
       <div className='flex size-12 items-center justify-center rounded-xl bg-muted'>
-        <IconBrandGithub
-          size={22}
-          className='text-muted-foreground'
-        />
+        <IconBrandGithub size={22} className='text-muted-foreground' />
       </div>
       <div className='space-y-1'>
         <p className='font-medium'>No repositories accessible</p>
-        <p className='text-sm text-muted-foreground'>No GitHub repositories are accessible. Check your GitHub App installation.</p>
+        <p className='text-sm text-muted-foreground'>
+          No GitHub repositories are accessible. Check your GitHub App
+          installation.
+        </p>
       </div>
     </div>
   );
 }
 
-function SearchEmptyState({ query, repositorySelection, installationId }: { query: string; repositorySelection: 'all' | 'selected'; installationId?: number }) {
+function SearchEmptyState({
+  query,
+  repositorySelection,
+  installationId,
+}: {
+  query: string;
+  repositorySelection: 'all' | 'selected';
+  installationId?: number;
+}) {
   const router = useRouter();
 
-  const configureUrl = installationId ? `https://github.com/settings/installations/${installationId}` : 'https://github.com/settings/installations';
+  const configureUrl = installationId
+    ? `https://github.com/settings/installations/${installationId}`
+    : 'https://github.com/settings/installations';
 
   function handleConfigure() {
     openGithubPopup(configureUrl, () => router.refresh());
@@ -386,14 +443,13 @@ function SearchEmptyState({ query, repositorySelection, installationId }: { quer
     return (
       <div className='flex flex-col items-center gap-3 rounded-xl border border-dashed border-border py-20 text-center'>
         <div className='flex size-12 items-center justify-center rounded-xl bg-muted'>
-          <IconSearch
-            size={22}
-            className='text-muted-foreground'
-          />
+          <IconSearch size={22} className='text-muted-foreground' />
         </div>
         <div className='space-y-1'>
           <p className='font-medium'>No results found</p>
-          <p className='text-sm text-muted-foreground'>No repositories match &ldquo;{query}&rdquo;.</p>
+          <p className='text-sm text-muted-foreground'>
+            No repositories match &ldquo;{query}&rdquo;.
+          </p>
         </div>
       </div>
     );
@@ -402,14 +458,14 @@ function SearchEmptyState({ query, repositorySelection, installationId }: { quer
   return (
     <div className='flex flex-col items-center gap-4 rounded-xl border border-dashed border-border py-20 text-center'>
       <div className='flex size-12 items-center justify-center rounded-xl bg-muted'>
-        <IconSearch
-          size={22}
-          className='text-muted-foreground'
-        />
+        <IconSearch size={22} className='text-muted-foreground' />
       </div>
       <div className='space-y-1'>
         <p className='font-medium'>No results found</p>
-        <p className='text-sm text-muted-foreground'>No repositories match &ldquo;{query}&rdquo;. You may need to grant access to more repositories.</p>
+        <p className='text-sm text-muted-foreground'>
+          No repositories match &ldquo;{query}&rdquo;. You may need to grant
+          access to more repositories.
+        </p>
       </div>
       <Button
         size='sm'

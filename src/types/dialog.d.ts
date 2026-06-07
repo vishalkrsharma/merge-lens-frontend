@@ -1,4 +1,4 @@
-declare type EDialogType = "ADD_REPO";
+declare type EDialogType = 'ADD_REPO';
 
 declare type TDialog = {
   type: EDialogType | null;

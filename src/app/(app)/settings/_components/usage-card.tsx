@@ -1,13 +1,13 @@
-import { IconBrandGoogle, IconRobot, IconUser } from "@tabler/icons-react";
+import { IconBrandGoogle, IconRobot, IconUser } from '@tabler/icons-react';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
+} from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
 import {
   Table,
   TableBody,
@@ -15,15 +15,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 
 const providerMeta: Record<
-  ApiUsageItem["provider"],
+  ApiUsageItem['provider'],
   { label: string; Icon: React.ElementType }
 > = {
-  anthropic: { label: "Anthropic Claude", Icon: IconRobot },
-  google: { label: "Google Gemini", Icon: IconBrandGoogle },
-  voyage: { label: "Voyage AI", Icon: IconUser },
+  anthropic: { label: 'Anthropic Claude', Icon: IconRobot },
+  google: { label: 'Google Gemini', Icon: IconBrandGoogle },
+  voyage: { label: 'Voyage AI', Icon: IconUser },
 };
 
 function formatTokens(n: number): string {
@@ -37,9 +37,9 @@ function formatCost(cents: number): string {
 }
 
 function getMonthLabel(): string {
-  return new Date().toLocaleDateString("en-US", {
-    month: "long",
-    year: "numeric",
+  return new Date().toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
   });
 }
 
@@ -52,23 +52,23 @@ export function UsageCard({ usage }: { usage: UsageStats }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-sm font-medium">Usage this month</CardTitle>
+        <CardTitle className='text-sm font-medium'>Usage this month</CardTitle>
         <CardDescription>{getMonthLabel()}</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className='space-y-4'>
         <div>
-          <div className="mb-2 flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">PR reviews</span>
-            <span className="font-mono">
-              <span className="font-semibold">{usage.thisMonthReviews}</span>
-              <span className="text-muted-foreground">
-                {" "}
+          <div className='mb-2 flex items-center justify-between text-sm'>
+            <span className='text-muted-foreground'>PR reviews</span>
+            <span className='font-mono'>
+              <span className='font-semibold'>{usage.thisMonthReviews}</span>
+              <span className='text-muted-foreground'>
+                {' '}
                 / {usage.monthlyLimit}
               </span>
             </span>
           </div>
-          <Progress value={usagePct} className="h-2" />
-          <p className="mt-1 text-xs text-muted-foreground">
+          <Progress value={usagePct} className='h-2' />
+          <p className='mt-1 text-xs text-muted-foreground'>
             {usage.monthlyLimit - usage.thisMonthReviews} reviews remaining this
             month
           </p>
@@ -77,10 +77,10 @@ export function UsageCard({ usage }: { usage: UsageStats }) {
         <Separator />
 
         <div>
-          <p className="mb-3 text-xs font-medium text-muted-foreground">
+          <p className='mb-3 text-xs font-medium text-muted-foreground'>
             API usage by provider
           </p>
-          <div className="rounded-lg border">
+          <div className='rounded-lg border'>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -96,21 +96,21 @@ export function UsageCard({ usage }: { usage: UsageStats }) {
                   return (
                     <TableRow key={row.provider}>
                       <TableCell>
-                        <div className="flex items-center gap-2 text-sm">
+                        <div className='flex items-center gap-2 text-sm'>
                           <meta.Icon
                             size={14}
-                            className="text-muted-foreground"
+                            className='text-muted-foreground'
                           />
                           {meta.label}
                         </div>
                       </TableCell>
-                      <TableCell className="font-mono text-xs">
+                      <TableCell className='font-mono text-xs'>
                         {row.calls}
                       </TableCell>
-                      <TableCell className="font-mono text-xs">
+                      <TableCell className='font-mono text-xs'>
                         {formatTokens(row.inputTokens + row.outputTokens)}
                       </TableCell>
-                      <TableCell className="font-mono text-xs">
+                      <TableCell className='font-mono text-xs'>
                         {formatCost(row.costCents)}
                       </TableCell>
                     </TableRow>
