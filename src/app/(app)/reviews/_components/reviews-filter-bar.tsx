@@ -33,7 +33,10 @@ export function ReviewsFilterBar({ repos }: { repos: Repository[] }) {
         defaultValue={searchParams.get("q") ?? ""}
         onChange={(e) => update("q", e.target.value)}
       />
-      <Select defaultValue={searchParams.get("repo") ?? "all"} onValueChange={(v) => update("repo", v)}>
+      <Select
+        defaultValue={searchParams.get("repo") ?? "all"}
+        onValueChange={(v) => update("repo", v)}
+      >
         <SelectTrigger className="h-8 w-44 text-sm">
           <SelectValue placeholder="All repos" />
         </SelectTrigger>
@@ -46,7 +49,10 @@ export function ReviewsFilterBar({ repos }: { repos: Repository[] }) {
           ))}
         </SelectContent>
       </Select>
-      <Select defaultValue={searchParams.get("status") ?? "all"} onValueChange={(v) => update("status", v)}>
+      <Select
+        defaultValue={searchParams.get("status") ?? "all"}
+        onValueChange={(v) => update("status", v)}
+      >
         <SelectTrigger className="h-8 w-36 text-sm">
           <SelectValue placeholder="All statuses" />
         </SelectTrigger>

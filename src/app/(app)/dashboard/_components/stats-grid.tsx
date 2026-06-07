@@ -1,4 +1,9 @@
-import { IconAlertOctagon, IconAlertTriangle, IconClock, IconGitPullRequest } from "@tabler/icons-react";
+import {
+  IconAlertOctagon,
+  IconAlertTriangle,
+  IconClock,
+  IconGitPullRequest,
+} from "@tabler/icons-react";
 import { StatCard } from "@/components/stat-card";
 
 function formatDuration(ms: number) {

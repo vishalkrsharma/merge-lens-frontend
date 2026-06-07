@@ -27,7 +27,10 @@ export function FindingsFilterBar({ repos }: { repos: Repository[] }) {
 
   return (
     <div className="flex flex-wrap gap-3">
-      <Select defaultValue={searchParams.get("agent") ?? undefined} onValueChange={(v) => update("agent", v)}>
+      <Select
+        defaultValue={searchParams.get("agent") ?? undefined}
+        onValueChange={(v) => update("agent", v)}
+      >
         <SelectTrigger className="h-8 w-36 text-sm">
           <SelectValue placeholder="All agents" />
         </SelectTrigger>
@@ -39,7 +42,10 @@ export function FindingsFilterBar({ repos }: { repos: Repository[] }) {
           <SelectItem value="style">Style</SelectItem>
         </SelectContent>
       </Select>
-      <Select defaultValue={searchParams.get("severity") ?? "all"} onValueChange={(v) => update("severity", v)}>
+      <Select
+        defaultValue={searchParams.get("severity") ?? "all"}
+        onValueChange={(v) => update("severity", v)}
+      >
         <SelectTrigger className="h-8 w-36 text-sm">
           <SelectValue placeholder="All severities" />
         </SelectTrigger>
@@ -50,7 +56,10 @@ export function FindingsFilterBar({ repos }: { repos: Repository[] }) {
           <SelectItem value="low">Low</SelectItem>
         </SelectContent>
       </Select>
-      <Select defaultValue={searchParams.get("repo") ?? "all"} onValueChange={(v) => update("repo", v)}>
+      <Select
+        defaultValue={searchParams.get("repo") ?? "all"}
+        onValueChange={(v) => update("repo", v)}
+      >
         <SelectTrigger className="h-8 w-44 text-sm">
           <SelectValue placeholder="All repos" />
         </SelectTrigger>

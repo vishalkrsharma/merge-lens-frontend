@@ -1,6 +1,6 @@
+import { IconArrowLeft } from "@tabler/icons-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { IconArrowLeft } from "@tabler/icons-react";
 import { PageHeader } from "@/components/page-header";
 import { ReviewStatusBadge } from "@/components/review-status-badge";
 import { getReview } from "@/lib/api";
@@ -15,7 +15,11 @@ function formatDuration(ms: number) {
 function formatDate(iso: string) {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("en-US", {
-    month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 
@@ -26,7 +30,7 @@ interface PageProps {
 export default async function ReviewDetailPage({ params }: PageProps) {
   const { id } = await params;
 
-  let review;
+  let review: ReviewDetail;
   try {
     review = await getReview(id);
   } catch {
@@ -38,7 +42,10 @@ export default async function ReviewDetailPage({ params }: PageProps) {
   return (
     <>
       <div className="mb-4">
-        <Link href="/reviews" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link
+          href="/reviews"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        >
           <IconArrowLeft size={14} />
           Back to reviews
         </Link>
@@ -52,7 +59,9 @@ export default async function ReviewDetailPage({ params }: PageProps) {
 
       <div className="mb-6 flex flex-wrap gap-4 text-sm text-muted-foreground">
         <span>Started: {formatDate(review.createdAt)}</span>
-        {review.completedAt && <span>Completed: {formatDate(review.completedAt)}</span>}
+        {review.completedAt && (
+          <span>Completed: {formatDate(review.completedAt)}</span>
+        )}
         <span>Duration: {formatDuration(review.durationMs)}</span>
         <span className="font-mono text-xs">
           <span className="text-red-400">{review.findingCounts.high}H</span>

@@ -1,6 +1,15 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface DataPoint {
   agent: AgentType;
@@ -26,17 +35,32 @@ export function FindingsBarChart({ data }: { data: DataPoint[] }) {
 
   return (
     <ResponsiveContainer width="100%" height={220}>
-      <BarChart data={displayData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+      <BarChart
+        data={displayData}
+        margin={{ top: 4, right: 8, left: -20, bottom: 0 }}
+      >
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="var(--color-border)"
+          vertical={false}
+        />
         <XAxis
           dataKey="label"
-          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", fontFamily: "var(--font-mono)" }}
+          tick={{
+            fontSize: 11,
+            fill: "var(--color-muted-foreground)",
+            fontFamily: "var(--font-mono)",
+          }}
           axisLine={false}
           tickLine={false}
         />
         <YAxis
           allowDecimals={false}
-          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", fontFamily: "var(--font-mono)" }}
+          tick={{
+            fontSize: 11,
+            fill: "var(--color-muted-foreground)",
+            fontFamily: "var(--font-mono)",
+          }}
           axisLine={false}
           tickLine={false}
         />

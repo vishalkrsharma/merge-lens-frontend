@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import { useDialog } from "@/hooks/use-dialog";
 
 export function DialogProvider() {
-  const pathname = usePathname();
+  const _pathname = usePathname();
   const { onClose } = useDialog();
 
   useEffect(() => {
     onClose();
-  }, [pathname, onClose]);
+  }, [onClose]);
 
   return null;
 }

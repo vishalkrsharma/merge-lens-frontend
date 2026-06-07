@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ReviewStatusBadge } from "@/components/review-status-badge";
 import {
   Table,
   TableBody,
@@ -7,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ReviewStatusBadge } from "@/components/review-status-badge";
 
 function formatDuration(ms: number) {
   if (ms === 0) return "—";
@@ -16,7 +16,11 @@ function formatDuration(ms: number) {
 
 function formatDate(iso: string) {
   if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 export function ReviewsTable({ reviews }: { reviews: Review[] }) {
@@ -37,32 +41,50 @@ export function ReviewsTable({ reviews }: { reviews: Review[] }) {
         <TableBody>
           {reviews.length === 0 && (
             <TableRow>
-              <TableCell colSpan={7} className="py-12 text-center text-sm text-muted-foreground">
+              <TableCell
+                colSpan={7}
+                className="py-12 text-center text-sm text-muted-foreground"
+              >
                 No reviews match the current filters.
               </TableCell>
             </TableRow>
           )}
           {reviews.map((r) => (
             <TableRow key={r.id}>
-              <TableCell className="font-mono text-xs">{r.owner}/{r.repo}</TableCell>
-              <TableCell className="font-mono text-xs">#{r.pullNumber}</TableCell>
+              <TableCell className="font-mono text-xs">
+                {r.owner}/{r.repo}
+              </TableCell>
+              <TableCell className="font-mono text-xs">
+                #{r.pullNumber}
+              </TableCell>
               <TableCell className="max-w-72 truncate text-sm">
-                <Link href={`/reviews/${r.id}`} className="hover:underline underline-offset-4">
+                <Link
+                  href={`/reviews/${r.id}`}
+                  className="hover:underline underline-offset-4"
+                >
                   {r.prTitle}
                 </Link>
               </TableCell>
-              <TableCell><ReviewStatusBadge status={r.status} /></TableCell>
+              <TableCell>
+                <ReviewStatusBadge status={r.status} />
+              </TableCell>
               <TableCell>
                 <span className="font-mono text-xs">
                   <span className="text-red-400">{r.findingCounts.high}H</span>
                   {" · "}
-                  <span className="text-amber-400">{r.findingCounts.medium}M</span>
+                  <span className="text-amber-400">
+                    {r.findingCounts.medium}M
+                  </span>
                   {" · "}
                   <span className="text-green-400">{r.findingCounts.low}L</span>
                 </span>
               </TableCell>
-              <TableCell className="font-mono text-xs">{formatDuration(r.durationMs)}</TableCell>
-              <TableCell className="text-xs text-muted-foreground">{formatDate(r.createdAt)}</TableCell>
+              <TableCell className="font-mono text-xs">
+                {formatDuration(r.durationMs)}
+              </TableCell>
+              <TableCell className="text-xs text-muted-foreground">
+                {formatDate(r.createdAt)}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

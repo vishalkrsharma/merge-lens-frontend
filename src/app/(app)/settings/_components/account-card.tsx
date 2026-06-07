@@ -1,10 +1,19 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { SignOutButton } from "@/components/sign-out-button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 export function AccountCard({ user, repoCount }: AccountCardProps) {
-  const initials = user.name.split(" ").map((n) => n[0]).join("");
+  const initials = user.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
 
   return (
     <Card>

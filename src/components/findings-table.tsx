@@ -1,8 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import {
+  IconArrowsSort,
+  IconSortAscending,
+  IconSortDescending,
+} from "@tabler/icons-react";
 import Link from "next/link";
-import { IconArrowsSort, IconSortAscending, IconSortDescending } from "@tabler/icons-react";
+import { useState } from "react";
+import { AgentBadge } from "@/components/agent-badge";
+import { SeverityBadge } from "@/components/severity-badge";
 import {
   Table,
   TableBody,
@@ -11,12 +17,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SeverityBadge } from "@/components/severity-badge";
-import { AgentBadge } from "@/components/agent-badge";
 
 const severityOrder: Record<Severity, number> = { high: 0, medium: 1, low: 2 };
 
-export function FindingsTable({ findings, showReviewLink = false }: FindingsTableProps) {
+export function FindingsTable({
+  findings,
+  showReviewLink = false,
+}: FindingsTableProps) {
   const [sortDir, setSortDir] = useState<"asc" | "desc" | null>(null);
 
   const sorted = [...findings].sort((a, b) => {
@@ -25,10 +32,17 @@ export function FindingsTable({ findings, showReviewLink = false }: FindingsTabl
     return sortDir === "asc" ? diff : -diff;
   });
 
-  const SortIcon = sortDir === "asc" ? IconSortAscending : sortDir === "desc" ? IconSortDescending : IconArrowsSort;
+  const SortIcon =
+    sortDir === "asc"
+      ? IconSortAscending
+      : sortDir === "desc"
+        ? IconSortDescending
+        : IconArrowsSort;
 
   function toggleSort() {
-    setSortDir((prev) => (prev === null ? "asc" : prev === "asc" ? "desc" : null));
+    setSortDir((prev) =>
+      prev === null ? "asc" : prev === "asc" ? "desc" : null,
+    );
   }
 
   if (findings.length === 0) {
@@ -64,16 +78,24 @@ export function FindingsTable({ findings, showReviewLink = false }: FindingsTabl
         <TableBody>
           {sorted.map((f) => (
             <TableRow key={f.id}>
-              <TableCell><SeverityBadge severity={f.severity} /></TableCell>
-              <TableCell><AgentBadge agent={f.agent} /></TableCell>
               <TableCell>
-                <span className="font-mono text-xs text-muted-foreground">{f.file}</span>
+                <SeverityBadge severity={f.severity} />
+              </TableCell>
+              <TableCell>
+                <AgentBadge agent={f.agent} />
+              </TableCell>
+              <TableCell>
+                <span className="font-mono text-xs text-muted-foreground">
+                  {f.file}
+                </span>
               </TableCell>
               <TableCell>
                 <span className="font-mono text-xs">{f.line}</span>
               </TableCell>
               <TableCell className="max-w-xs text-sm">{f.issue}</TableCell>
-              <TableCell className="max-w-xs text-sm text-muted-foreground">{f.suggestion}</TableCell>
+              <TableCell className="max-w-xs text-sm text-muted-foreground">
+                {f.suggestion}
+              </TableCell>
               {showReviewLink && (
                 <TableCell>
                   <Link

@@ -1,8 +1,8 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AgentBadge } from "@/components/agent-badge";
 import { FindingsTable } from "@/components/findings-table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const AGENT_TABS: { value: AgentType | "all"; label: string }[] = [
   { value: "all", label: "All" },
@@ -15,7 +15,10 @@ const AGENT_TABS: { value: AgentType | "all"; label: string }[] = [
 export function FindingsTabs({ findings }: { findings: Finding[] }) {
   const tabs = AGENT_TABS.map((t) => ({
     ...t,
-    findings: t.value === "all" ? findings : findings.filter((f) => f.agent === t.value),
+    findings:
+      t.value === "all"
+        ? findings
+        : findings.filter((f) => f.agent === t.value),
   }));
 
   return (
@@ -23,9 +26,13 @@ export function FindingsTabs({ findings }: { findings: Finding[] }) {
       <TabsList className="mb-4">
         {tabs.map((t) => (
           <TabsTrigger key={t.value} value={t.value} className="gap-1.5">
-            {t.value !== "all" && <AgentBadge agent={t.value as AgentType} showLabel={false} />}
+            {t.value !== "all" && (
+              <AgentBadge agent={t.value as AgentType} showLabel={false} />
+            )}
             {t.label}
-            <span className="ml-1 font-mono text-xs opacity-60">({t.findings.length})</span>
+            <span className="ml-1 font-mono text-xs opacity-60">
+              ({t.findings.length})
+            </span>
           </TabsTrigger>
         ))}
       </TabsList>

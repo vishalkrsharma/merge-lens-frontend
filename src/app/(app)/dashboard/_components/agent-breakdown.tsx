@@ -1,5 +1,5 @@
-import { Card } from "@/components/ui/card";
 import { AgentBadge } from "@/components/agent-badge";
+import { Card } from "@/components/ui/card";
 
 const AGENTS: AgentType[] = ["bug", "security", "performance", "style"];
 
@@ -11,7 +11,9 @@ export function AgentBreakdown({ stats }: { stats: Stats }) {
           <AgentBadge agent={agent} showLabel={false} className="text-lg" />
           <div>
             <p className="text-xs text-muted-foreground capitalize">{agent}</p>
-            <p className="font-mono text-lg font-bold">{stats.findingsByAgent[agent] ?? 0}</p>
+            <p className="font-mono text-lg font-bold">
+              {stats.findingsByAgent[agent] ?? 0}
+            </p>
           </div>
         </Card>
       ))}

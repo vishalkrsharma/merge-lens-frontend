@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SeverityBadge } from "@/components/severity-badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const SEVERITIES: Severity[] = ["high", "medium", "low"];
 

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { createAuthClient } from 'better-auth/react';
+import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
-  baseURL: process.env.BACKEND_URL ?? 'http://localhost:8080',
+  baseURL: process.env.BACKEND_URL ?? "http://localhost:8080",
 });
 
 export const { signIn, signOut, signUp, useSession } = authClient;

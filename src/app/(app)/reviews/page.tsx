@@ -18,7 +18,10 @@ export default async function ReviewsPage({ searchParams }: PageProps) {
 
   return (
     <>
-      <PageHeader title="Reviews" description={`${total} review${total !== 1 ? "s" : ""}`} />
+      <PageHeader
+        title="Reviews"
+        description={`${total} review${total !== 1 ? "s" : ""}`}
+      />
       <Suspense>
         <ReviewsFilterBar repos={repos} />
       </Suspense>

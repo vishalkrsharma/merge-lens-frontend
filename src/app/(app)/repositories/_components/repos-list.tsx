@@ -11,8 +11,8 @@ import {
   IconSearch,
   IconSettings,
 } from '@tabler/icons-react';
-import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { AgentBadge } from '@/components/agent-badge';
 import { Button } from '@/components/ui/button';
@@ -85,7 +85,7 @@ export function ReposList({ connectedRepos, availableRepos, repositorySelection,
   for (const item of filtered) {
     const owner = getOwner(item);
     if (!grouped.has(owner)) grouped.set(owner, []);
-    grouped.get(owner)!.push(item);
+    grouped.get(owner)?.push(item);
   }
 
   async function handleAdd(repo: GithubRepo) {
@@ -137,7 +137,7 @@ export function ReposList({ connectedRepos, availableRepos, repositorySelection,
           <SelectContent>
             <SelectItem value='all'>All</SelectItem>
             <SelectItem value='active'>Active</SelectItem>
-            <SelectItem value='paused'>Paused</SelectItem>
+            <SelectItem value='paused'>Inactive</SelectItem>
           </SelectContent>
         </Select>
         <Button
@@ -180,7 +180,7 @@ function OwnerGroup({ owner, items, addingId, onAdd }: { owner: string; items: R
   return (
     <div className='space-y-2'>
       <div className='flex items-center gap-2 px-0.5'>
-        <div className='flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary'>{owner[0].toUpperCase()}</div>
+        <div className='flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[12px] font-bold text-primary'>{owner[0].toUpperCase()}</div>
         <span className='text-sm font-medium'>{owner}</span>
         <span className='text-xs text-muted-foreground'>
           {items.length} {items.length === 1 ? 'repository' : 'repositories'}
@@ -253,14 +253,14 @@ function ConnectedRepoRow({ repo }: { repo: Repository }) {
             />
           </a>
           {isActive ? (
-            <span className='inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium text-green-400'>
-              <IconCircleCheck size={9} />
+            <span className='inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[12px] font-medium text-green-400'>
+              <IconCircleCheck size={12} />
               Active
             </span>
           ) : (
-            <span className='inline-flex items-center gap-1 rounded-full bg-zinc-500/10 px-2 py-0.5 text-[10px] font-medium text-zinc-400'>
-              <IconPlayerPause size={9} />
-              Paused
+            <span className='inline-flex items-center gap-1 rounded-full bg-zinc-500/10 px-2 py-0.5 text-[12px] font-medium text-zinc-400'>
+              <IconPlayerPause size={12} />
+              Inactive
             </span>
           )}
         </div>

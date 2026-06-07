@@ -1,5 +1,9 @@
 import { PageHeader } from "@/components/page-header";
-import { listAvailableRepositories, listRepositories, syncRepositories } from "@/lib/api";
+import {
+  listAvailableRepositories,
+  listRepositories,
+  syncRepositories,
+} from "@/lib/api";
 import { ReposList } from "./_components/repos-list";
 
 export default async function RepositoriesPage() {
@@ -15,7 +19,7 @@ export default async function RepositoriesPage() {
       ? repos.filter((r) => !removedSet.has(`${r.owner}/${r.repo}`))
       : repos;
 
-  const repositorySelection = sync?.repositorySelection ?? 'selected';
+  const repositorySelection = sync?.repositorySelection ?? "selected";
   const installationId = connectedRepos[0]?.installationId;
 
   return (

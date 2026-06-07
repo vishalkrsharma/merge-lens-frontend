@@ -28,7 +28,9 @@ export function HotspotsCard({ hotspots }: { hotspots: HotspotFile[] }) {
                 style={{ width: `${(count / maxCount) * 100}%` }}
               />
             </div>
-            <p className="mt-0.5 truncate font-mono text-[10px] text-muted-foreground/60">{file}</p>
+            <p className="mt-0.5 truncate font-mono text-[10px] text-muted-foreground/60">
+              {file}
+            </p>
           </div>
         ))}
       </CardContent>

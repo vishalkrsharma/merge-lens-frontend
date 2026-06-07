@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ReviewStatusBadge } from "@/components/review-status-badge";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Table,
@@ -8,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ReviewStatusBadge } from "@/components/review-status-badge";
 import { cn } from "@/lib/utils";
 
 function formatDuration(ms: number) {
@@ -18,7 +18,10 @@ function formatDuration(ms: number) {
 
 function formatDate(iso: string) {
   if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 }
 
 export function RecentReviewsTable({ reviews }: { reviews: Review[] }) {
@@ -26,7 +29,10 @@ export function RecentReviewsTable({ reviews }: { reviews: Review[] }) {
     <div className="mt-6">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-medium">Recent reviews</h2>
-        <Link href="/reviews" className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>
+        <Link
+          href="/reviews"
+          className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+        >
           View all
         </Link>
       </div>
@@ -46,23 +52,41 @@ export function RecentReviewsTable({ reviews }: { reviews: Review[] }) {
           <TableBody>
             {reviews.map((r) => (
               <TableRow key={r.id}>
-                <TableCell className="font-mono text-xs">{r.owner}/{r.repo}</TableCell>
-                <TableCell className="font-mono text-xs">#{r.pullNumber}</TableCell>
-                <TableCell className="max-w-56 truncate text-sm">
-                  <Link href={`/reviews/${r.id}`} className="hover:underline">{r.prTitle}</Link>
+                <TableCell className="font-mono text-xs">
+                  {r.owner}/{r.repo}
                 </TableCell>
-                <TableCell><ReviewStatusBadge status={r.status} /></TableCell>
+                <TableCell className="font-mono text-xs">
+                  #{r.pullNumber}
+                </TableCell>
+                <TableCell className="max-w-56 truncate text-sm">
+                  <Link href={`/reviews/${r.id}`} className="hover:underline">
+                    {r.prTitle}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <ReviewStatusBadge status={r.status} />
+                </TableCell>
                 <TableCell>
                   <span className="font-mono text-xs">
-                    <span className="text-red-400">{r.findingCounts.high}H</span>
+                    <span className="text-red-400">
+                      {r.findingCounts.high}H
+                    </span>
                     {" · "}
-                    <span className="text-amber-400">{r.findingCounts.medium}M</span>
+                    <span className="text-amber-400">
+                      {r.findingCounts.medium}M
+                    </span>
                     {" · "}
-                    <span className="text-green-400">{r.findingCounts.low}L</span>
+                    <span className="text-green-400">
+                      {r.findingCounts.low}L
+                    </span>
                   </span>
                 </TableCell>
-                <TableCell className="font-mono text-xs">{formatDuration(r.durationMs)}</TableCell>
-                <TableCell className="text-xs text-muted-foreground">{formatDate(r.createdAt)}</TableCell>
+                <TableCell className="font-mono text-xs">
+                  {formatDuration(r.durationMs)}
+                </TableCell>
+                <TableCell className="text-xs text-muted-foreground">
+                  {formatDate(r.createdAt)}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

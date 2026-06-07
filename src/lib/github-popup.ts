@@ -6,13 +6,13 @@ export function openGithubPopup(url: string, onClose?: () => void) {
 
   const popup = window.open(
     url,
-    'github-popup',
+    "github-popup",
     `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes,toolbar=no,menubar=no,location=yes`,
   );
 
   if (!popup) {
     // Popup blocked — fall back to new tab
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(url, "_blank", "noopener,noreferrer");
     return;
   }
 

@@ -7,7 +7,12 @@ import { HotspotsCard } from "./_components/hotspots-card";
 import { SeverityCard } from "./_components/severity-card";
 
 interface PageProps {
-  searchParams: Promise<{ agent?: string; severity?: string; repo?: string; file?: string }>;
+  searchParams: Promise<{
+    agent?: string;
+    severity?: string;
+    repo?: string;
+    file?: string;
+  }>;
 }
 
 export default async function FindingsPage({ searchParams }: PageProps) {
