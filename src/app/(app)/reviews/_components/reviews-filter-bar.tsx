@@ -10,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Repository } from "@/lib/types";
 
 export function ReviewsFilterBar({ repos }: { repos: Repository[] }) {
   const router = useRouter();

@@ -1,7 +1,6 @@
 "use client";
 
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import type { AgentType } from "@/lib/types";
 
 interface DataPoint {
   agent: AgentType;

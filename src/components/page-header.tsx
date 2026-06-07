@@ -1,11 +1,4 @@
 import { Separator } from '@/components/ui/separator';
-import type { ReactNode } from 'react';
-
-interface PageHeaderProps {
-  title: string;
-  description?: string;
-  action?: ReactNode;
-}
 
 export function PageHeader({ title, description, action }: PageHeaderProps) {
   return (

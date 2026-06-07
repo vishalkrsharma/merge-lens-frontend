@@ -3,7 +3,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AgentBadge } from "@/components/agent-badge";
 import { FindingsTable } from "@/components/findings-table";
-import type { AgentType, Finding } from "@/lib/types";
 
 const AGENT_TABS: { value: AgentType | "all"; label: string }[] = [
   { value: "all", label: "All" },

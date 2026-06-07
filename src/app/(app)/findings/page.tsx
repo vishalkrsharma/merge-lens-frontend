@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { FindingsTable } from "@/components/findings-table";
 import { PageHeader } from "@/components/page-header";
 import { getHotspots, listFindings, listRepositories } from "@/lib/api";
-import type { Severity } from "@/lib/types";
 import { FindingsFilterBar } from "./_components/findings-filter-bar";
 import { HotspotsCard } from "./_components/hotspots-card";
 import { SeverityCard } from "./_components/severity-card";

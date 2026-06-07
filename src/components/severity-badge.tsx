@@ -1,11 +1,5 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { Severity } from "@/lib/types";
-
-interface SeverityBadgeProps {
-  severity: Severity;
-  className?: string;
-}
 
 const styles: Record<Severity, string> = {
   high: "bg-red-500/15 text-red-400 border-red-500/20 hover:bg-red-500/20",

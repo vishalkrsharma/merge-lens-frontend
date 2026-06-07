@@ -1,12 +1,5 @@
 import { IconBolt, IconBug, IconLock, IconSparkles } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import type { AgentType } from "@/lib/types";
-
-interface AgentBadgeProps {
-  agent: AgentType;
-  showLabel?: boolean;
-  className?: string;
-}
 
 const config: Record<AgentType, { label: string; icon: React.ElementType; color: string }> = {
   bug: { label: "Bug", icon: IconBug, color: "text-red-400" },

@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ReviewStatusBadge } from "@/components/review-status-badge";
-import type { Review } from "@/lib/types";
 
 function formatDuration(ms: number) {
   if (ms === 0) return "—";

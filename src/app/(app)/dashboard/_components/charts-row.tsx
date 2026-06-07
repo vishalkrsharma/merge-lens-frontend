@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { AgentType, Stats } from "@/lib/types";
 import { FindingsBarChart } from "./findings-bar-chart";
 import { ReviewsAreaChart } from "./reviews-area-chart";
 

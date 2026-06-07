@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import type { EDialogType, TDialog } from "@/types/dialog";
 
 export const useDialog = create<TDialog>((set) => ({
   type: null,

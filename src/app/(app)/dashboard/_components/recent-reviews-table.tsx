@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/table";
 import { ReviewStatusBadge } from "@/components/review-status-badge";
 import { cn } from "@/lib/utils";
-import type { Review } from "@/lib/types";
 
 function formatDuration(ms: number) {
   if (ms === 0) return "—";

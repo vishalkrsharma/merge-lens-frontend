@@ -1,15 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import type { ReactNode } from "react";
-
-interface StatCardProps {
-  title: string;
-  value: string | number;
-  icon: ReactNode;
-  delta?: string;
-  deltaPositive?: boolean;
-  className?: string;
-}
 
 export function StatCard({ title, value, icon, delta, deltaPositive, className }: StatCardProps) {
   return (

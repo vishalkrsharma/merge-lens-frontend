@@ -3,11 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { SignOutButton } from "@/components/sign-out-button";
 
-interface AccountCardProps {
-  user: { name: string; email: string; image?: string | null };
-  repoCount: number;
-}
-
 export function AccountCard({ user, repoCount }: AccountCardProps) {
   const initials = user.name.split(" ").map((n) => n[0]).join("");
 

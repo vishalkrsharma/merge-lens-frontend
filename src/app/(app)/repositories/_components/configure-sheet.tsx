@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/sheet";
 import { Switch } from "@/components/ui/switch";
 import { updateRepository } from "@/lib/actions";
-import type { AgentType, Repository, Severity } from "@/lib/types";
 
 const ALL_AGENTS: AgentType[] = ["bug", "security", "performance", "style"];
 

@@ -1,6 +1,5 @@
 import { IconAlertOctagon, IconAlertTriangle, IconClock, IconGitPullRequest } from "@tabler/icons-react";
 import { StatCard } from "@/components/stat-card";
-import type { Stats } from "@/lib/types";
 
 function formatDuration(ms: number) {
   if (ms === 0) return "—";

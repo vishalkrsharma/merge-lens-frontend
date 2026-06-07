@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { AgentBadge } from "@/components/agent-badge";
-import type { AgentType, ReviewSummary } from "@/lib/types";
 
 const AGENT_SUMMARY_KEYS: { agent: AgentType; key: keyof ReviewSummary }[] = [
   { agent: "bug", key: "bugSummary" },

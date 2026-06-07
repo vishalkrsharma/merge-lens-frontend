@@ -13,12 +13,6 @@ import {
 } from "@/components/ui/table";
 import { SeverityBadge } from "@/components/severity-badge";
 import { AgentBadge } from "@/components/agent-badge";
-import type { Finding, Severity } from "@/lib/types";
-
-interface FindingsTableProps {
-  findings: Finding[];
-  showReviewLink?: boolean;
-}
 
 const severityOrder: Record<Severity, number> = { high: 0, medium: 1, low: 2 };
 

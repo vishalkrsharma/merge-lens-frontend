@@ -1,0 +1,9 @@
+{
+	"servers": {
+		"api-docs": {
+			"url": "https://mcp.scalar.com/mcp/b500aaaa-b6fd-4332-a673-66e3c5fd514b",
+			"type": "http"
+		}
+	},
+	"inputs": []
+}

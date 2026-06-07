@@ -10,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { ApiUsageItem, UsageStats } from "@/lib/types";
 
 const providerMeta: Record<ApiUsageItem["provider"], { label: string; Icon: React.ElementType }> = {
   anthropic: { label: "Anthropic Claude", Icon: IconRobot },

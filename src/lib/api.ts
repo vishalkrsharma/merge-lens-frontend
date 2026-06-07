@@ -1,4 +1,3 @@
-import type { Finding, GithubRepo, Repository, Review, ReviewDetail, Stats, SyncResult, UsageStats } from './types';
 import { serverClient } from './server-client';
 
 function buildQS(params: Record<string, string | undefined>): string {

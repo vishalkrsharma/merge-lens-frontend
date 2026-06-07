@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { AgentBadge } from "@/components/agent-badge";
-import type { AgentType, Stats } from "@/lib/types";
 
 const AGENTS: AgentType[] = ["bug", "security", "performance", "style"];
 

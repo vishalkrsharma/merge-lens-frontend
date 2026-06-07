@@ -1,11 +1,5 @@
 import { IconCheck, IconLoader2, IconX } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
-import type { ReviewStatus } from "@/lib/types";
-
-interface ReviewStatusBadgeProps {
-  status: ReviewStatus;
-  className?: string;
-}
 
 const config: Record<ReviewStatus, { label: string; className: string; icon?: React.ElementType; spin?: boolean }> = {
   completed: { label: "Completed", className: "bg-green-500/15 text-green-400 border-green-500/20", icon: IconCheck },

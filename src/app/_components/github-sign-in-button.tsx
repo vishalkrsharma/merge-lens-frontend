@@ -5,14 +5,6 @@ import { Button } from '@/components/ui/button';
 import { signIn } from '@/lib/auth-client';
 import { toast } from 'sonner';
 
-interface GitHubSignInButtonProps {
-  size?: 'default' | 'sm' | 'lg' | 'icon';
-  variant?: 'default' | 'outline' | 'ghost';
-  className?: string;
-  children?: React.ReactNode;
-  iconSize?: number;
-}
-
 export function GitHubSignInButton({
   size = 'default',
   variant = 'default',

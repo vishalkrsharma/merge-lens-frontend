@@ -42,12 +42,6 @@ export default function LandingPage() {
             <span className='font-mono font-semibold'>MergeLens</span>
           </div>
           <div className='flex items-center gap-3'>
-            {/* <Link
-              href='/auth/signin'
-              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}
-            >
-              Sign in
-            </Link> */}
             <GitHubSignInButton
               size='sm'
               iconSize={14}

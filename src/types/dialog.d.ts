@@ -1,8 +1,6 @@
-export enum EDialogType {
-  ADD_REPO = "ADD_REPO",
-}
+declare type EDialogType = "ADD_REPO";
 
-export type TDialog = {
+declare type TDialog = {
   type: EDialogType | null;
   isOpen: boolean;
   dialogData: unknown;
