@@ -18,6 +18,7 @@ async function handler(request: NextRequest) {
   const fetchOptions: RequestInit & { duplex?: string } = {
     method: request.method,
     headers: forwardHeaders,
+    redirect: 'manual',
   };
 
   if (request.method !== 'GET' && request.method !== 'HEAD') {
