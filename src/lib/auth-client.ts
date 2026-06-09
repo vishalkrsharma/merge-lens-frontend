@@ -2,8 +2,14 @@
 
 import { createAuthClient } from 'better-auth/react';
 
+const baseURL = (process.env.NEXT_PUBLIC_BACKEND_URL ?? process.env.BACKEND_URL)?.trim();
+
+if (!baseURL) {
+  throw new Error('BACKEND_URL is not defined');
+}
+
 export const authClient = createAuthClient({
-  baseURL: (process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL || 'http://localhost:8080').trim(),
+  baseURL,
 });
 
 export const { signIn, signOut, signUp, useSession } = authClient;
