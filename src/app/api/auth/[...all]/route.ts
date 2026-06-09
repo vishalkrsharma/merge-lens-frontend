@@ -31,6 +31,24 @@ async function handler(request: NextRequest) {
   const responseHeaders = new Headers(response.headers);
   responseHeaders.delete('transfer-encoding');
 
+  // For non-GET redirects (e.g. POST /sign-in/social → 302 to GitHub OAuth),
+  // return JSON so the better-auth client does window.location.href instead of
+  // fetch() following the 302 to GitHub, which is CORS-blocked and returns empty.
+  if (
+    request.method !== 'GET' &&
+    request.method !== 'HEAD' &&
+    response.status >= 300 &&
+    response.status < 400
+  ) {
+    try {
+      const body = await response.json();
+      return NextResponse.json(body, { status: 200 });
+    } catch {
+      const location = responseHeaders.get('location');
+      return NextResponse.json({ url: location, redirect: true }, { status: 200 });
+    }
+  }
+
   return new NextResponse(response.body, {
     status: response.status,
     statusText: response.statusText,
