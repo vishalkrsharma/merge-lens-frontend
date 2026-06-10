@@ -28,8 +28,20 @@ async function handler(request: NextRequest) {
 
   const response = await fetch(targetUrl, fetchOptions);
 
-  const responseHeaders = new Headers(response.headers);
-  responseHeaders.delete('transfer-encoding');
+  // Build response headers manually so each Set-Cookie header is preserved as a
+  // separate entry. `new Headers(response.headers)` collapses multiple Set-Cookie
+  // values into one comma-joined string, which browsers reject — the session cookie
+  // is silently dropped and getSession() always returns null.
+  const responseHeaders = new Headers();
+  for (const [key, value] of response.headers.entries()) {
+    if (key.toLowerCase() === 'set-cookie') continue; // appended individually below
+    if (key.toLowerCase() === 'transfer-encoding') continue;
+    responseHeaders.set(key, value);
+  }
+  const setCookies = response.headers.getSetCookie?.() ?? [];
+  for (const c of setCookies) {
+    responseHeaders.append('set-cookie', c);
+  }
 
   // For non-GET redirects (e.g. POST /sign-in/social → 302 to GitHub OAuth),
   // return JSON so the better-auth client does window.location.href instead of
@@ -40,13 +52,17 @@ async function handler(request: NextRequest) {
     response.status >= 300 &&
     response.status < 400
   ) {
+    let body: { url?: string; redirect?: boolean };
     try {
-      const body = await response.json();
-      return NextResponse.json(body, { status: 200 });
+      body = await response.json();
     } catch {
-      const location = responseHeaders.get('location');
-      return NextResponse.json({ url: location, redirect: true }, { status: 200 });
+      body = { url: response.headers.get('location') ?? '', redirect: true };
     }
+    const jsonRes = NextResponse.json(body, { status: 200 });
+    for (const c of setCookies) {
+      jsonRes.headers.append('set-cookie', c);
+    }
+    return jsonRes;
   }
 
   return new NextResponse(response.body, {
