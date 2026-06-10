@@ -58,3 +58,38 @@ export async function toggleRepositoryActive(
     };
   }
 }
+
+export async function saveApiKey(
+  provider: ApiProvider,
+  key: string,
+): Promise<ActionResult> {
+  try {
+    await serverClient.put(`/settings/api-keys/${provider}`, { key });
+    revalidatePath('/settings');
+    return { success: true, data: undefined };
+  } catch (err) {
+    if (isAxiosError(err)) {
+      const status = err.response?.status ?? 500;
+      const message: string =
+        err.response?.data?.message ?? 'An unexpected error occurred';
+      return { success: false, status, message };
+    }
+    return { success: false, status: 500, message: 'An unexpected error occurred' };
+  }
+}
+
+export async function deleteApiKey(provider: ApiProvider): Promise<ActionResult> {
+  try {
+    await serverClient.delete(`/settings/api-keys/${provider}`);
+    revalidatePath('/settings');
+    return { success: true, data: undefined };
+  } catch (err) {
+    if (isAxiosError(err)) {
+      const status = err.response?.status ?? 500;
+      const message: string =
+        err.response?.data?.message ?? 'An unexpected error occurred';
+      return { success: false, status, message };
+    }
+    return { success: false, status: 500, message: 'An unexpected error occurred' };
+  }
+}
