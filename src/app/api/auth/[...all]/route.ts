@@ -43,6 +43,22 @@ async function handler(request: NextRequest) {
     responseHeaders.append('set-cookie', c);
   }
 
+  // OAuth callback: better-auth returns 302 to wherever it wants (often the backend
+  // domain). Ignore that Location, copy the session cookies, and send the browser
+  // to /connect-github ourselves so it always lands on the frontend.
+  if (
+    pathname.startsWith('/api/auth/callback/') &&
+    request.method === 'GET' &&
+    response.status >= 300 &&
+    response.status < 400
+  ) {
+    const redirect = NextResponse.redirect(new URL('/connect-github', request.url));
+    for (const c of setCookies) {
+      redirect.headers.append('set-cookie', c);
+    }
+    return redirect;
+  }
+
   // For non-GET redirects (e.g. POST /sign-in/social → 302 to GitHub OAuth),
   // return JSON so the better-auth client does window.location.href instead of
   // fetch() following the 302 to GitHub, which is CORS-blocked and returns empty.
