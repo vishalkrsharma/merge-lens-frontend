@@ -76,3 +76,8 @@ export async function getUsage(): Promise<UsageStats> {
   const { data } = await serverClient.get<UsageStats>('/settings/usage');
   return data;
 }
+
+export async function getApiKeys(): Promise<ApiProvider[]> {
+  const { data } = await serverClient.get<ApiProvider[]>('/settings/api-keys');
+  return data;
+}
