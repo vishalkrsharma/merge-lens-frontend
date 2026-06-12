@@ -81,7 +81,7 @@ export function ProviderCard({
         <RadioGroup
           value={active}
           onValueChange={handleChange}
-          className='gap-3'
+          className='gap-0'
           aria-disabled={isPending}
         >
           {REVIEW_PROVIDERS.map((provider) => {
@@ -98,7 +98,7 @@ export function ProviderCard({
                 type='button'
                 disabled={disabled}
                 className={[
-                  'flex w-full cursor-pointer items-center gap-3 rounded-lg border p-3 text-left transition-colors',
+                  '-mt-px flex w-full cursor-pointer items-center gap-3 border p-3 text-left transition-colors first:mt-0',
                   disabled
                     ? 'cursor-not-allowed opacity-50'
                     : 'hover:bg-muted/40',
@@ -122,7 +122,7 @@ export function ProviderCard({
                     <span className='text-sm font-medium leading-none'>
                       {meta.label}
                     </span>
-                    <span className='rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground'>
+                    <span className='bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground'>
                       {meta.model}
                     </span>
                     {active === provider && (
@@ -132,7 +132,7 @@ export function ProviderCard({
                       </span>
                     )}
                     {needsKey && !hasKey && (
-                      <span className='ml-auto rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground'>
+                      <span className='ml-auto bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground'>
                         API key required
                       </span>
                     )}
