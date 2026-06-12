@@ -1,17 +1,25 @@
 import { PageHeader } from '@/components/page-header';
-import { getApiKeys, getUsage, listRepositories } from '@/lib/api';
+import {
+  getApiKeys,
+  getPreferredProvider,
+  getUsage,
+  listRepositories,
+} from '@/lib/api';
 import { getSession } from '@/lib/auth';
 import { AccountCard } from './_components/account-card';
 import { ApiKeysCard } from './_components/api-keys-card';
+import { ProviderCard } from './_components/provider-card';
 import { UsageCard } from './_components/usage-card';
 
 export default async function SettingsPage() {
-  const [session, usage, repos, configuredProviders] = await Promise.all([
-    getSession(),
-    getUsage(),
-    listRepositories(),
-    getApiKeys(),
-  ]);
+  const [session, usage, repos, configuredProviders, preferredProvider] =
+    await Promise.all([
+      getSession(),
+      getUsage(),
+      listRepositories(),
+      getApiKeys(),
+      getPreferredProvider(),
+    ]);
 
   return (
     <>
@@ -23,6 +31,10 @@ export default async function SettingsPage() {
         <UsageCard usage={usage} />
         <AccountCard user={session?.user} repoCount={repos.length} />
         <ApiKeysCard configuredProviders={configuredProviders} />
+        <ProviderCard
+          configuredProviders={configuredProviders}
+          current={preferredProvider}
+        />
       </div>
     </>
   );

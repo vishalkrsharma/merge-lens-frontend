@@ -52,7 +52,9 @@ async function handler(request: NextRequest) {
     response.status >= 300 &&
     response.status < 400
   ) {
-    const redirect = NextResponse.redirect(new URL('/connect-github', request.url));
+    const redirect = NextResponse.redirect(
+      new URL('/connect-github', request.url),
+    );
     for (const c of setCookies) {
       redirect.headers.append('set-cookie', c);
     }

@@ -2,6 +2,7 @@ declare type ReviewStatus = 'pending' | 'running' | 'completed' | 'failed';
 declare type AgentType = 'bug' | 'security' | 'performance' | 'style';
 declare type Severity = 'low' | 'medium' | 'high';
 declare type ApiProvider = 'google' | 'openai' | 'anthropic' | 'voyage';
+declare type ReviewProvider = 'google' | 'openai' | 'anthropic';
 
 declare interface FindingCounts {
   high: number;
