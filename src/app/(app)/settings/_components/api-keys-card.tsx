@@ -1,7 +1,13 @@
 'use client';
 
+import {
+  IconBrain,
+  IconBrandGoogle,
+  IconBrandOpenai,
+  IconKey,
+  IconTrash,
+} from '@tabler/icons-react';
 import { useState, useTransition } from 'react';
-import { IconBrandGoogle, IconKey, IconTrash } from '@tabler/icons-react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -21,16 +27,26 @@ interface ProviderConfig {
   placeholder: string;
 }
 
-const PROVIDERS: Record<string, ProviderConfig> = {
+const PROVIDERS: Record<ReviewProvider, ProviderConfig> = {
   google: {
     label: 'Google Gemini',
     Icon: IconBrandGoogle,
     placeholder: 'AIza...',
   },
+  anthropic: {
+    label: 'Anthropic Claude',
+    Icon: IconBrain,
+    placeholder: 'sk-ant-...',
+  },
+  openai: {
+    label: 'OpenAI',
+    Icon: IconBrandOpenai,
+    placeholder: 'sk-...',
+  },
 };
 
 interface ApiKeyRowProps {
-  provider: ApiProvider;
+  provider: ReviewProvider;
   config: ProviderConfig;
   configured: boolean;
 }
@@ -115,6 +131,10 @@ export function ApiKeysCard({
 }: {
   configuredProviders: ApiProvider[];
 }) {
+  const entries = Object.entries(PROVIDERS) as [
+    ReviewProvider,
+    ProviderConfig,
+  ][];
   return (
     <Card>
       <CardHeader>
@@ -128,11 +148,11 @@ export function ApiKeysCard({
         </CardDescription>
       </CardHeader>
       <CardContent className='space-y-4'>
-        {Object.entries(PROVIDERS).map(([provider, config], i) => (
+        {entries.map(([provider, config], i) => (
           <div key={provider}>
             {i > 0 && <Separator className='mb-4' />}
             <ApiKeyRow
-              provider={provider as ApiProvider}
+              provider={provider}
               config={config}
               configured={configuredProviders.includes(provider as ApiProvider)}
             />

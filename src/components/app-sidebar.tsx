@@ -116,11 +116,11 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent side='top' align='start' className='w-52'>
-            <DropdownMenuItem onClick={() => router.push('/settings')}>
+            <DropdownMenuItem onClick={() => router.push('/settings/account')}>
               <IconUser size={14} />
               Profile
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => router.push('/settings')}>
+            <DropdownMenuItem onClick={() => router.push('/settings/usage')}>
               <IconChartBar size={14} />
               Usage
             </DropdownMenuItem>

@@ -1,6 +1,10 @@
 'use client';
 
-import { IconAlertTriangle, IconArrowLeft, IconRefresh } from '@tabler/icons-react';
+import {
+  IconAlertTriangle,
+  IconArrowLeft,
+  IconRefresh,
+} from '@tabler/icons-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
@@ -50,7 +54,11 @@ export default function ErrorPage({
           <IconRefresh size={14} />
           Try again
         </Button>
-        <Button variant='outline' render={<Link href='/dashboard' />} className='gap-2'>
+        <Button
+          variant='outline'
+          render={<Link href='/dashboard' />}
+          className='gap-2'
+        >
           <IconArrowLeft size={14} />
           Dashboard
         </Button>
