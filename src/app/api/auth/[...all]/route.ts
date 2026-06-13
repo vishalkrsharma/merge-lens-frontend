@@ -46,17 +46,25 @@ async function handler(request: NextRequest) {
   // OAuth callback: better-auth returns 302 to wherever it wants (often the backend
   // domain). Ignore that Location, copy the session cookies, and send the browser
   // to /connect-github ourselves so it always lands on the frontend.
-  // If the backend signals an error (no Set-Cookie, or ?error= in Location) the
-  // session was never created — bounce to the landing page instead.
   if (
     pathname.startsWith('/api/auth/callback/') &&
     request.method === 'GET' &&
     response.status >= 300 &&
     response.status < 400
   ) {
-    // No Set-Cookie on the callback means the backend didn't create a session
-    // (state mismatch, GitHub error, etc.) — send the user back to the landing page.
-    const dest = setCookies.length > 0 ? '/connect-github' : '/';
+    const backendLocation = response.headers.get('location') ?? '';
+    const hasError = backendLocation.includes('error=');
+    const sessionCookies = setCookies.filter(
+      (c) => !c.startsWith('__Secure-better-auth.state='),
+    );
+    console.log('[auth-callback]', {
+      backendStatus: response.status,
+      backendLocation,
+      hasError,
+      allCookies: setCookies,
+      sessionCookies,
+    });
+    const dest = !hasError && sessionCookies.length > 0 ? '/connect-github' : '/';
     const redirect = NextResponse.redirect(new URL(dest, request.url));
     for (const c of setCookies) {
       redirect.headers.append('set-cookie', c);
