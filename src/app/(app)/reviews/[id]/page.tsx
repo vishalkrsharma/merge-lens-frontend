@@ -39,6 +39,11 @@ export default async function ReviewDetailPage({ params }: PageProps) {
 
   const { findings, summary } = review;
 
+  const findingCounts = findings.reduce(
+    (acc, f) => { acc[f.severity]++; return acc; },
+    { high: 0, medium: 0, low: 0 },
+  );
+
   return (
     <>
       <div className='mb-4'>
@@ -64,11 +69,11 @@ export default async function ReviewDetailPage({ params }: PageProps) {
         )}
         <span>Duration: {formatDuration(review.durationMs)}</span>
         <span className='font-mono text-xs'>
-          <span className='text-red-400'>{review.findingCounts.high}H</span>
+          <span className='text-red-400'>{findingCounts.high}H</span>
           {' · '}
-          <span className='text-amber-400'>{review.findingCounts.medium}M</span>
+          <span className='text-amber-400'>{findingCounts.medium}M</span>
           {' · '}
-          <span className='text-green-400'>{review.findingCounts.low}L</span>
+          <span className='text-green-400'>{findingCounts.low}L</span>
         </span>
       </div>
 
