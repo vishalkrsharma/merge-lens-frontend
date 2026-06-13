@@ -31,5 +31,13 @@ export async function GET() {
     return new NextResponse('Failed to initiate GitHub OAuth', { status: 502 });
   }
 
-  return NextResponse.redirect(oauthUrl);
+  // Forward PKCE/state cookies that better-auth sets on sign-in/social so the
+  // callback can verify the OAuth state. Without these the state check fails,
+  // the backend creates no session, and getSession() always returns null.
+  const redirect = NextResponse.redirect(oauthUrl);
+  const setCookies = res.headers.getSetCookie?.() ?? [];
+  for (const c of setCookies) {
+    redirect.headers.append('set-cookie', c);
+  }
+  return redirect;
 }
