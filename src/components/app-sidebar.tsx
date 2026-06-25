@@ -42,9 +42,9 @@ interface SidebarUser {
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
+  { href: '/repositories', label: 'Repositories', icon: IconBuildingWarehouse },
   { href: '/reviews', label: 'Reviews', icon: IconGitPullRequest },
   { href: '/findings', label: 'Findings', icon: IconBug },
-  { href: '/repositories', label: 'Repositories', icon: IconBuildingWarehouse },
 ];
 
 export function AppSidebar({ user }: { user: SidebarUser }) {
