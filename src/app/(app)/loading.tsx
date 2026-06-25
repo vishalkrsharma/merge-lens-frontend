@@ -5,13 +5,13 @@ export default function Loading() {
   return (
     <div>
       <div className='mb-6'>
-        <Skeleton className='h-6 w-40' />
-        <Skeleton className='mt-2 h-4 w-64' />
+        <Skeleton className='h-6 w-36' />
+        <Skeleton className='mt-1.5 h-4 w-56' />
         <Separator className='mt-4' />
       </div>
-      <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
-        {['a', 'b', 'c', 'd'].map((k) => (
-          <Skeleton key={k} className='h-48 w-full rounded-xl' />
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+        {[0, 1, 2, 3].map((k) => (
+          <Skeleton key={k} className='h-40 w-full rounded-xl' />
         ))}
       </div>
     </div>
