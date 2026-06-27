@@ -104,6 +104,22 @@ export async function deleteApiKey(
   }
 }
 
+export async function retryReview(reviewId: string): Promise<ActionResult> {
+  try {
+    await serverClient.post(`/reviews/${reviewId}/retry`);
+    revalidatePath(`/reviews/${reviewId}`);
+    return { success: true, data: undefined };
+  } catch (err) {
+    if (isAxiosError(err)) {
+      const status = err.response?.status ?? 500;
+      const message: string =
+        err.response?.data?.message ?? 'An unexpected error occurred';
+      return { success: false, status, message };
+    }
+    return { success: false, status: 500, message: 'An unexpected error occurred' };
+  }
+}
+
 export async function setPreferredProvider(
   provider: ReviewProvider | null,
 ): Promise<ActionResult> {
