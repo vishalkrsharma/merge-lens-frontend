@@ -1,7 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { IconAlertTriangle, IconLoader2, IconRefresh } from '@tabler/icons-react';
+import {
+  IconAlertTriangle,
+  IconLoader2,
+  IconRefresh,
+} from '@tabler/icons-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { retryReview } from '@/lib/actions';
@@ -21,14 +25,14 @@ export function ReviewErrorBanner({ reviewId }: { reviewId: string }) {
   }
 
   return (
-    <div className='mb-6 rounded-xl border border-red-500/20 bg-red-500/5 p-5'>
+    <div className='mb-6 border border-red-500/20 bg-red-500/5 p-5'>
       <div className='flex items-start gap-3'>
         <IconAlertTriangle size={18} className='mt-0.5 shrink-0 text-red-400' />
         <div className='flex-1 space-y-1'>
           <p className='text-sm font-medium text-red-400'>Review failed</p>
           <p className='text-sm text-muted-foreground'>
-            The AI review could not be completed. This is usually caused by a missing or invalid
-            API key.{' '}
+            The AI review could not be completed. This is usually caused by a
+            missing or invalid API key.{' '}
             <Link
               href='/settings/models'
               className='text-foreground underline underline-offset-4 hover:text-primary'

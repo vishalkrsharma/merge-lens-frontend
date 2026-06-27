@@ -29,9 +29,9 @@ export function ReviewsTable({ reviews }: { reviews: Review[] }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Repository</TableHead>
-            <TableHead>PR</TableHead>
             <TableHead>Title</TableHead>
+            <TableHead>PR</TableHead>
+            <TableHead>Repository</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Findings</TableHead>
             <TableHead>Duration</TableHead>
@@ -51,12 +51,6 @@ export function ReviewsTable({ reviews }: { reviews: Review[] }) {
           )}
           {reviews.map((r) => (
             <TableRow key={r.id}>
-              <TableCell className='font-mono text-xs'>
-                {r.owner}/{r.repo}
-              </TableCell>
-              <TableCell className='font-mono text-xs'>
-                #{r.pullNumber}
-              </TableCell>
               <TableCell className='max-w-72 truncate text-sm'>
                 <Link
                   href={`/reviews/${r.id}`}
@@ -65,6 +59,13 @@ export function ReviewsTable({ reviews }: { reviews: Review[] }) {
                   {r.prTitle}
                 </Link>
               </TableCell>
+              <TableCell className='font-mono text-xs'>
+                #{r.pullNumber}
+              </TableCell>
+              <TableCell className='font-mono text-xs'>
+                {r.owner}/{r.repo}
+              </TableCell>
+
               <TableCell>
                 <ReviewStatusBadge status={r.status} />
               </TableCell>

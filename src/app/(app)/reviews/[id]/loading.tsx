@@ -12,7 +12,7 @@ export default function ReviewDetailLoading() {
             <Skeleton className='h-6 w-3/4 max-w-lg' />
             <Skeleton className='mt-1.5 h-4 w-80' />
           </div>
-          <Skeleton className='h-6 w-20 rounded-full' />
+          <Skeleton className='h-6 w-20' />
         </div>
         <Separator className='mt-4' />
       </div>
@@ -24,7 +24,7 @@ export default function ReviewDetailLoading() {
         <Skeleton className='h-4 w-20' />
       </div>
 
-      <div className='mb-6 rounded-xl border bg-card p-5'>
+      <div className='mb-6 border bg-card p-5'>
         <Skeleton className='mb-4 h-4 w-32' />
         <div className='space-y-2'>
           <Skeleton className='h-3.5 w-full' />
@@ -46,14 +46,14 @@ export default function ReviewDetailLoading() {
       <div>
         <div className='mb-3 flex gap-1 border-b'>
           {[0, 1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className='h-8 w-20 rounded-t-md' />
+            <Skeleton key={i} className='h-8 w-20' />
           ))}
         </div>
         <div className='space-y-3'>
           {[0, 1, 2, 3].map((i) => (
-            <div key={i} className='rounded-xl border bg-card p-4'>
+            <div key={i} className='border bg-card p-4'>
               <div className='mb-2 flex items-center gap-2'>
-                <Skeleton className='h-5 w-16 rounded-full' />
+                <Skeleton className='h-5 w-16' />
                 <Skeleton className='h-4 w-32 font-mono' />
                 <Skeleton className='h-4 w-10' />
               </div>

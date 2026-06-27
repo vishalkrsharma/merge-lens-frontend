@@ -3,12 +3,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AccountLoading() {
   return (
-    <div className='rounded-xl border bg-card p-5'>
+    <div className='border bg-card p-5'>
       <Skeleton className='mb-1 h-4 w-20' />
       <Skeleton className='mb-5 h-3.5 w-32' />
 
       <div className='flex items-center gap-3'>
-        <Skeleton className='h-12 w-12 rounded-full' />
+        <Skeleton className='h-12 w-12' />
         <div>
           <Skeleton className='h-4 w-32' />
           <Skeleton className='mt-1.5 h-3.5 w-44' />
@@ -30,7 +30,7 @@ export default function AccountLoading() {
 
       <Separator className='my-4' />
 
-      <Skeleton className='h-9 w-24 rounded-md' />
+      <Skeleton className='h-9 w-24' />
     </div>
   );
 }

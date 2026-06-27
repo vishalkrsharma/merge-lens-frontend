@@ -13,12 +13,12 @@ export default function ReviewsLoading() {
       </div>
 
       <div className='mb-4 flex flex-wrap items-center gap-2'>
-        <Skeleton className='h-9 w-48 rounded-md' />
-        <Skeleton className='h-9 w-36 rounded-md' />
-        <Skeleton className='h-9 w-32 rounded-md' />
+        <Skeleton className='h-9 w-48' />
+        <Skeleton className='h-9 w-36' />
+        <Skeleton className='h-9 w-32' />
       </div>
 
-      <div className='overflow-hidden rounded-lg border'>
+      <div className='overflow-hidden border'>
         <div className='flex gap-4 border-b px-4 py-3'>
           {COL_WIDTHS.map((w, i) => (
             <Skeleton key={i} className='h-3.5 shrink-0' style={{ width: w }} />
