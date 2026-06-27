@@ -11,7 +11,7 @@ export default function Loading() {
       </div>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
         {[0, 1, 2, 3].map((k) => (
-          <Skeleton key={k} className='h-40 w-full rounded-xl' />
+          <Skeleton key={k} className='h-40 w-full' />
         ))}
       </div>
     </div>

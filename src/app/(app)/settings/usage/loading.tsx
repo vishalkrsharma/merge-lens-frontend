@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function UsageLoading() {
   return (
-    <div className='rounded-xl border bg-card p-5'>
+    <div className='border bg-card p-5'>
       <Skeleton className='mb-1 h-4 w-36' />
       <Skeleton className='mb-5 h-3.5 w-28' />
 
@@ -11,13 +11,13 @@ export default function UsageLoading() {
         <Skeleton className='h-4 w-20' />
         <Skeleton className='h-4 w-16' />
       </div>
-      <Skeleton className='h-2 w-full rounded-full' />
+      <Skeleton className='h-2 w-full' />
       <Skeleton className='mt-1.5 h-3 w-48' />
 
       <Separator className='my-4' />
 
       <Skeleton className='mb-3 h-3.5 w-32' />
-      <div className='overflow-hidden rounded-lg border'>
+      <div className='overflow-hidden border'>
         <div className='flex gap-6 border-b px-4 py-3'>
           {[96, 48, 72, 72].map((w, i) => (
             <Skeleton key={i} className='h-3.5 shrink-0' style={{ width: w }} />
