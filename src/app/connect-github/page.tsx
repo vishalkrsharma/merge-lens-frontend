@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { getSession } from '@/lib/auth';
+import { GithubAppPoller } from './_components/github-app-poller';
 
 export default async function ConnectGitHubPage() {
   const session = await getSession();
@@ -17,7 +18,7 @@ export default async function ConnectGitHubPage() {
 
   return (
     <div className='flex min-h-screen flex-col items-center justify-center gap-12 px-4 py-16'>
-      {/* <GithubAppPoller /> */}
+      <GithubAppPoller />
       <div className='flex flex-col items-center gap-3 text-center'>
         <div className='mb-2 flex size-14 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/20'>
           <IconBrandGithub className='size-7 text-primary' />

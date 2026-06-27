@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/page-header';
 import { ReviewStatusBadge } from '@/components/review-status-badge';
 import { getReview } from '@/lib/api';
 import { FindingsTabs } from './_components/findings-tabs';
+import { ReviewErrorBanner } from './_components/review-error-banner';
 import { ReviewSummaryCard } from './_components/review-summary';
 
 function formatDuration(ms: number) {
@@ -76,6 +77,8 @@ export default async function ReviewDetailPage({ params }: PageProps) {
           <span className='text-green-400'>{findingCounts.low}L</span>
         </span>
       </div>
+
+      {review.status === 'failed' && <ReviewErrorBanner reviewId={review.id} />}
 
       {summary && <ReviewSummaryCard summary={summary} />}
 
