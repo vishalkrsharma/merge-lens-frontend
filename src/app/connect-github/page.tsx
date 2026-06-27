@@ -13,7 +13,7 @@ export default async function ConnectGitHubPage() {
   const session = await getSession();
   if (!session) redirect('/');
 
-  if (session.user.hasGithubApp) redirect('/dashboard');
+  if (session.user.hasGithubApp) redirect('/api-keys');
 
   return (
     <div className='flex min-h-screen flex-col items-center justify-center gap-12 px-4 py-16'>
