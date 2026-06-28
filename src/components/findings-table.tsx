@@ -54,11 +54,11 @@ export function FindingsTable({
   }
 
   return (
-    <div className='border'>
-      <Table>
+    <div className='border overflow-hidden'>
+      <Table className='table-fixed w-full'>
         <TableHeader>
           <TableRow>
-            <TableHead>
+            <TableHead className='w-28'>
               <button
                 onClick={toggleSort}
                 className='inline-flex items-center gap-1 font-medium hover:text-foreground'
@@ -67,12 +67,12 @@ export function FindingsTable({
                 Severity <SortIcon size={14} />
               </button>
             </TableHead>
-            <TableHead>Agent</TableHead>
-            <TableHead>File</TableHead>
-            <TableHead className='w-16'>Line</TableHead>
-            <TableHead>Issue</TableHead>
-            <TableHead>Suggestion</TableHead>
-            {showReviewLink && <TableHead>Review</TableHead>}
+            <TableHead className='w-24'>Agent</TableHead>
+            <TableHead className='w-40'>File</TableHead>
+            <TableHead className='w-14'>Line</TableHead>
+            <TableHead className='w-[30%]'>Issue</TableHead>
+            <TableHead className='w-[30%]'>Suggestion</TableHead>
+            {showReviewLink && <TableHead className='w-16'>Review</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -85,16 +85,18 @@ export function FindingsTable({
                 <AgentBadge agent={f.agent} />
               </TableCell>
               <TableCell>
-                <span className='font-mono text-xs text-muted-foreground'>
+                <span className='font-mono text-xs text-muted-foreground break-all'>
                   {f.file}
                 </span>
               </TableCell>
               <TableCell>
                 <span className='font-mono text-xs'>{f.line}</span>
               </TableCell>
-              <TableCell className='max-w-xs text-sm'>{f.issue}</TableCell>
-              <TableCell className='max-w-xs text-sm text-muted-foreground'>
-                {f.suggestion}
+              <TableCell className='text-sm align-top'>
+                <div className='break-words'>{f.issue}</div>
+              </TableCell>
+              <TableCell className='text-sm text-muted-foreground align-top'>
+                <div className='break-words'>{f.suggestion}</div>
               </TableCell>
               {showReviewLink && (
                 <TableCell>
