@@ -7,7 +7,10 @@ export async function getSession() {
   const headersList = await headers();
   const cookie = headersList.get('cookie') ?? '';
 
-  console.log('[getSession] cookies present:', cookie ? cookie.split(';').map((c) => c.trim().split('=')[0]) : []);
+  console.log(
+    '[getSession] cookies present:',
+    cookie ? cookie.split(';').map((c) => c.trim().split('=')[0]) : [],
+  );
 
   try {
     const response = await fetch(`${BACKEND_URL}/api/auth/get-session`, {
@@ -16,7 +19,12 @@ export async function getSession() {
     });
 
     const text = await response.text();
-    console.log('[getSession] backend status:', response.status, 'body:', text.slice(0, 200));
+    console.log(
+      '[getSession] backend status:',
+      response.status,
+      'body:',
+      text.slice(0, 200),
+    );
 
     if (!response.ok) return null;
 

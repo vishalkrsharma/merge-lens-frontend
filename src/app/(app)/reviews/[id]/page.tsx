@@ -41,7 +41,10 @@ export default async function ReviewDetailPage({ params }: PageProps) {
   const { findings, summary } = review;
 
   const findingCounts = findings.reduce(
-    (acc, f) => { acc[f.severity]++; return acc; },
+    (acc, f) => {
+      acc[f.severity]++;
+      return acc;
+    },
     { high: 0, medium: 0, low: 0 },
   );
 

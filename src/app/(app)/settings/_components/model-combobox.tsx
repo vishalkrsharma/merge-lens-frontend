@@ -73,13 +73,16 @@ export function ModelCombobox({
           {isOllama ? (
             <>
               <IconCpu size={14} className='shrink-0 text-muted-foreground' />
-              <span className='text-foreground'>Ollama (local)</span>
+              <span className='text-foreground'>Ollama</span>
             </>
           ) : selected ? (
             <>
               {(() => {
-                const Icon = PROVIDER_ICONS[selected.provider] ?? IconBrandGoogle;
-                return <Icon size={14} className='shrink-0 text-muted-foreground' />;
+                const Icon =
+                  PROVIDER_ICONS[selected.provider] ?? IconBrandGoogle;
+                return (
+                  <Icon size={14} className='shrink-0 text-muted-foreground' />
+                );
               })()}
               <span className='text-foreground'>{selected.name}</span>
               <span className='bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground'>
@@ -101,10 +104,14 @@ export function ModelCombobox({
           <CommandList>
             <CommandEmpty>No models found.</CommandEmpty>
             {CLOUD_PROVIDERS.map((provider, i) => {
-              const providerModels = models.filter((m) => m.provider === provider);
+              const providerModels = models.filter(
+                (m) => m.provider === provider,
+              );
               if (providerModels.length === 0) return null;
               const Icon = PROVIDER_ICONS[provider] ?? IconBrandGoogle;
-              const hasKey = configuredProviders.includes(provider as ApiProvider);
+              const hasKey = configuredProviders.includes(
+                provider as ApiProvider,
+              );
 
               return (
                 <span key={provider}>
@@ -119,7 +126,10 @@ export function ModelCombobox({
                         disabled={!hasKey}
                         className={!hasKey ? 'opacity-50' : ''}
                       >
-                        <Icon size={14} className='shrink-0 text-muted-foreground' />
+                        <Icon
+                          size={14}
+                          className='shrink-0 text-muted-foreground'
+                        />
                         <span className='flex-1'>
                           <span className='block font-medium leading-none'>
                             {model.name}
@@ -129,7 +139,10 @@ export function ModelCombobox({
                           </span>
                         </span>
                         {!hasKey && (
-                          <IconLock size={12} className='shrink-0 text-muted-foreground' />
+                          <IconLock
+                            size={12}
+                            className='shrink-0 text-muted-foreground'
+                          />
                         )}
                       </CommandItem>
                     ))}
@@ -138,7 +151,7 @@ export function ModelCombobox({
               );
             })}
             <CommandSeparator />
-            <CommandGroup heading='Local'>
+            <CommandGroup heading='Ollama'>
               <CommandItem
                 value='ollama'
                 onSelect={() => handleSelect('ollama')}
@@ -146,9 +159,7 @@ export function ModelCombobox({
               >
                 <IconCpu size={14} className='shrink-0 text-muted-foreground' />
                 <span className='flex-1'>
-                  <span className='block font-medium leading-none'>
-                    Ollama (local)
-                  </span>
+                  <span className='block font-medium leading-none'>Ollama</span>
                   <span className='mt-0.5 block text-[10px] text-muted-foreground'>
                     Run models on your own hardware
                   </span>
