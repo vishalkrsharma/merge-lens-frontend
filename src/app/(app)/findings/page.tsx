@@ -1,10 +1,13 @@
 import { Suspense } from 'react';
 import { FindingsTable } from '@/components/findings-table';
 import { PageHeader } from '@/components/page-header';
+import { Pagination } from '@/components/pagination';
 import { getHotspots, listFindings, listRepositories } from '@/lib/api';
 import { FindingsFilterBar } from './_components/findings-filter-bar';
 import { HotspotsCard } from './_components/hotspots-card';
 import { SeverityCard } from './_components/severity-card';
+
+const LIMIT = 25;
 
 interface PageProps {
   searchParams: Promise<{
@@ -12,14 +15,23 @@ interface PageProps {
     severity?: string;
     repo?: string;
     file?: string;
+    page?: string;
   }>;
 }
 
 export default async function FindingsPage({ searchParams }: PageProps) {
-  const { agent, severity, repo, file } = await searchParams;
+  const { agent, severity, repo, file, page: pageParam } = await searchParams;
+  const page = Math.max(1, Number(pageParam ?? '1') || 1);
 
   const [{ data: findings, total }, hotspots, repos] = await Promise.all([
-    listFindings({ agent, severity, repo, file, limit: '200' }),
+    listFindings({
+      agent,
+      severity,
+      repo,
+      file,
+      page: String(page),
+      limit: String(LIMIT),
+    }),
     getHotspots(5),
     listRepositories(),
   ]);
@@ -42,6 +54,9 @@ export default async function FindingsPage({ searchParams }: PageProps) {
       <div className='mt-4 grid grid-cols-1 gap-6 lg:grid-cols-3'>
         <div className='lg:col-span-2'>
           <FindingsTable findings={findings} showReviewLink />
+          <Suspense>
+            <Pagination total={total} limit={LIMIT} page={page} />
+          </Suspense>
         </div>
         <div>
           <HotspotsCard hotspots={hotspots} />

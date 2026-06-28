@@ -20,6 +20,7 @@ export function ReviewsFilterBar({ repos }: { repos: Repository[] }) {
       const params = new URLSearchParams(searchParams.toString());
       if (value && value !== 'all') params.set(key, value);
       else params.delete(key);
+      params.delete('page');
       router.push(`?${params.toString()}`);
     },
     [router, searchParams],
