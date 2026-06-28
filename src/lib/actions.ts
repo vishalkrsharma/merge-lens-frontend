@@ -168,15 +168,16 @@ export async function setPreferredModel(
   }
 }
 
-export async function getOllamaModels(): Promise<{
+export async function getOllamaModels(url?: string): Promise<{
   models: string[];
   error?: string;
 }> {
   try {
+    const params = url ? `?url=${encodeURIComponent(url)}` : '';
     const { data } = await serverClient.get<{
       models: string[];
       error?: string;
-    }>('/settings/ollama-models');
+    }>(`/settings/ollama-models${params}`);
     return data;
   } catch {
     return { models: [], error: 'Failed to reach backend' };

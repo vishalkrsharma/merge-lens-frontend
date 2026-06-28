@@ -28,43 +28,38 @@ const PROVIDER_ICONS: Record<string, React.ElementType> = {
   google: IconBrandGoogle,
   anthropic: IconBrain,
   openai: IconBrandOpenai,
-  ollama: IconCpu,
 };
 
 const PROVIDER_LABELS: Record<string, string> = {
   google: 'Google',
   anthropic: 'Anthropic',
   openai: 'OpenAI',
-  ollama: 'Ollama (local)',
 };
 
-// Providers that don't require an API key
-const FREE_PROVIDERS = new Set(['ollama']);
-
-const PROVIDERS = ['google', 'anthropic', 'openai', 'ollama'];
+const CLOUD_PROVIDERS = ['google', 'anthropic', 'openai'];
 
 interface ModelComboboxProps {
   models: ModelEntry[];
-  currentModelId: string | null;
+  value: string | null;
   configuredProviders: ApiProvider[];
-  onSelect: (modelId: string) => void;
+  onSelect: (value: string) => void;
   disabled?: boolean;
 }
 
 export function ModelCombobox({
   models,
-  currentModelId,
+  value,
   configuredProviders,
   onSelect,
   disabled,
 }: ModelComboboxProps) {
   const [open, setOpen] = useState(false);
 
-  const selected = models.find((m) => m.id === currentModelId);
-  const SelectedIcon = selected ? PROVIDER_ICONS[selected.provider] : null;
+  const isOllama = value === 'ollama';
+  const selected = isOllama ? null : models.find((m) => m.id === value);
 
-  function handleSelect(modelId: string) {
-    onSelect(modelId);
+  function handleSelect(id: string) {
+    onSelect(id);
     setOpen(false);
   }
 
@@ -75,21 +70,27 @@ export function ModelCombobox({
         className='flex w-full items-center justify-between border bg-background px-3 py-2 text-left text-sm transition-colors hover:bg-muted/40 disabled:cursor-not-allowed disabled:opacity-50'
       >
         <span className='flex items-center gap-2'>
-          {SelectedIcon && (
-            <SelectedIcon
-              size={14}
-              className='shrink-0 text-muted-foreground'
-            />
-          )}
-          <span
-            className={selected ? 'text-foreground' : 'text-muted-foreground'}
-          >
-            {selected ? selected.name : 'Select a model...'}
-          </span>
-          {selected && (
-            <span className='bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground'>
-              {PROVIDER_LABELS[selected.provider]}
-            </span>
+          {isOllama ? (
+            <>
+              <IconCpu size={14} className='shrink-0 text-muted-foreground' />
+              <span className='text-foreground'>Ollama (local)</span>
+              <span className='bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground'>
+                Local
+              </span>
+            </>
+          ) : selected ? (
+            <>
+              {(() => {
+                const Icon = PROVIDER_ICONS[selected.provider] ?? IconBrandGoogle;
+                return <Icon size={14} className='shrink-0 text-muted-foreground' />;
+              })()}
+              <span className='text-foreground'>{selected.name}</span>
+              <span className='bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground'>
+                {PROVIDER_LABELS[selected.provider]}
+              </span>
+            </>
+          ) : (
+            <span className='text-muted-foreground'>Select a model...</span>
           )}
         </span>
         <IconChevronDown size={14} className='shrink-0 text-muted-foreground' />
@@ -102,15 +103,11 @@ export function ModelCombobox({
           <CommandInput placeholder='Search models...' />
           <CommandList>
             <CommandEmpty>No models found.</CommandEmpty>
-            {PROVIDERS.map((provider, i) => {
-              const providerModels = models.filter(
-                (m) => m.provider === provider,
-              );
+            {CLOUD_PROVIDERS.map((provider, i) => {
+              const providerModels = models.filter((m) => m.provider === provider);
               if (providerModels.length === 0) return null;
               const Icon = PROVIDER_ICONS[provider] ?? IconBrandGoogle;
-              const isFree = FREE_PROVIDERS.has(provider);
-              const hasKey =
-                isFree || configuredProviders.includes(provider as ApiProvider);
+              const hasKey = configuredProviders.includes(provider as ApiProvider);
 
               return (
                 <span key={provider}>
@@ -121,16 +118,11 @@ export function ModelCombobox({
                         key={model.id}
                         value={`${model.name} ${model.id}`}
                         onSelect={() => hasKey && handleSelect(model.id)}
-                        data-checked={
-                          model.id === currentModelId ? 'true' : undefined
-                        }
+                        data-checked={model.id === value ? 'true' : undefined}
                         disabled={!hasKey}
                         className={!hasKey ? 'opacity-50' : ''}
                       >
-                        <Icon
-                          size={14}
-                          className='shrink-0 text-muted-foreground'
-                        />
+                        <Icon size={14} className='shrink-0 text-muted-foreground' />
                         <span className='flex-1'>
                           <span className='block font-medium leading-none'>
                             {model.name}
@@ -140,10 +132,7 @@ export function ModelCombobox({
                           </span>
                         </span>
                         {!hasKey && (
-                          <IconLock
-                            size={12}
-                            className='shrink-0 text-muted-foreground'
-                          />
+                          <IconLock size={12} className='shrink-0 text-muted-foreground' />
                         )}
                       </CommandItem>
                     ))}
@@ -151,6 +140,24 @@ export function ModelCombobox({
                 </span>
               );
             })}
+            <CommandSeparator />
+            <CommandGroup heading='Local'>
+              <CommandItem
+                value='ollama'
+                onSelect={() => handleSelect('ollama')}
+                data-checked={isOllama ? 'true' : undefined}
+              >
+                <IconCpu size={14} className='shrink-0 text-muted-foreground' />
+                <span className='flex-1'>
+                  <span className='block font-medium leading-none'>
+                    Ollama (local)
+                  </span>
+                  <span className='mt-0.5 block text-[10px] text-muted-foreground'>
+                    Run models on your own hardware
+                  </span>
+                </span>
+              </CommandItem>
+            </CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>

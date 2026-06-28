@@ -8,7 +8,7 @@ import { ApiKeysCard } from '../_components/api-keys-card';
 import { ModelCard } from '../_components/model-card';
 
 export default async function ModelsPage() {
-  const [configuredProviders, models, currentModelId, ollamaUrl] =
+  const [configuredProviders, models, { model: currentModelId, provider: preferredProvider }, ollamaUrl] =
     await Promise.all([
       getApiKeys(),
       getModels(),
@@ -22,6 +22,7 @@ export default async function ModelsPage() {
         models={models}
         configuredProviders={configuredProviders}
         currentModelId={currentModelId}
+        preferredProvider={preferredProvider}
         ollamaUrl={ollamaUrl}
       />
     </div>
