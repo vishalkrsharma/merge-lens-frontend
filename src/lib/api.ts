@@ -100,3 +100,10 @@ export async function getPreferredModel(): Promise<string | null> {
   );
   return data.model;
 }
+
+export async function getOllamaUrl(): Promise<string | null> {
+  const { data } = await serverClient.get<{ url: string | null }>(
+    '/settings/ollama-url',
+  );
+  return data.url;
+}

@@ -167,3 +167,23 @@ export async function setPreferredModel(
     };
   }
 }
+
+export async function setOllamaUrl(url: string | null): Promise<ActionResult> {
+  try {
+    await serverClient.put('/settings/ollama-url', { url: url || null });
+    revalidatePath('/settings');
+    return { success: true, data: undefined };
+  } catch (err) {
+    if (isAxiosError(err)) {
+      const status = err.response?.status ?? 500;
+      const message: string =
+        err.response?.data?.message ?? 'An unexpected error occurred';
+      return { success: false, status, message };
+    }
+    return {
+      success: false,
+      status: 500,
+      message: 'An unexpected error occurred',
+    };
+  }
+}
