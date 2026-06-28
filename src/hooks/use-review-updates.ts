@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { authClient } from '@/lib/auth-client';
-import { getSocket } from '@/lib/socket';
+import { acquireSocket, releaseSocket } from '@/lib/socket';
 
 export function useReviewUpdates(
   events: string[],
@@ -17,7 +17,7 @@ export function useReviewUpdates(
       ?.token;
     if (!token) return;
 
-    const s = getSocket(token);
+    const s = acquireSocket(token);
     s.connect();
 
     const handlers = events.map((event) => {
@@ -28,7 +28,7 @@ export function useReviewUpdates(
 
     return () => {
       handlers.forEach(({ event, handler }) => s.off(event, handler));
-      s.disconnect();
+      releaseSocket();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, events.join(',')]);
