@@ -36,7 +36,7 @@ export function RecentReviewsTable({ reviews }: { reviews: Review[] }) {
           View all
         </Link>
       </div>
-      <div className='rounded-lg border'>
+      <div className='border'>
         <Table>
           <TableHeader>
             <TableRow>

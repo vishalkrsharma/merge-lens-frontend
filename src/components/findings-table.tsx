@@ -47,14 +47,14 @@ export function FindingsTable({
 
   if (findings.length === 0) {
     return (
-      <div className='rounded-lg border border-dashed py-12 text-center text-sm text-muted-foreground'>
+      <div className='border border-dashed py-12 text-center text-sm text-muted-foreground'>
         No findings
       </div>
     );
   }
 
   return (
-    <div className='rounded-lg border'>
+    <div className='border'>
       <Table>
         <TableHeader>
           <TableRow>

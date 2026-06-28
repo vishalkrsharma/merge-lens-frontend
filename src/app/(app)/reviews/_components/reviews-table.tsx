@@ -25,7 +25,7 @@ function formatDate(iso: string) {
 
 export function ReviewsTable({ reviews }: { reviews: Review[] }) {
   return (
-    <div className='mt-4 rounded-lg border'>
+    <div className='mt-4 border'>
       <Table>
         <TableHeader>
           <TableRow>
