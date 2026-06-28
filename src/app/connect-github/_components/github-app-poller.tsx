@@ -1,19 +1,18 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useReviewUpdates } from '@/hooks/use-review-updates';
 
 export function GithubAppPoller() {
   const router = useRouter();
 
+  useReviewUpdates(['github-app:installed'], () => router.refresh());
+
+  // Fallback: if socket doesn't connect within 30s, poll once
   useEffect(() => {
-    let attempts = 0;
-    const interval = setInterval(() => {
-      attempts++;
-      router.refresh();
-      if (attempts >= 10) clearInterval(interval);
-    }, 3000);
-    return () => clearInterval(interval);
+    const timeout = setTimeout(() => router.refresh(), 30_000);
+    return () => clearTimeout(timeout);
   }, [router]);
 
   return null;

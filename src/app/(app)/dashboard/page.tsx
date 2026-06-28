@@ -5,6 +5,7 @@ import { AgentBreakdown } from './_components/agent-breakdown';
 import { ChartsRow } from './_components/charts-row';
 import { RecentReviewsTable } from './_components/recent-reviews-table';
 import { StatsGrid } from './_components/stats-grid';
+import { DashboardLiveUpdater } from './_components/dashboard-live-updater';
 
 export default async function DashboardPage() {
   const _session = await getSession();
@@ -16,6 +17,7 @@ export default async function DashboardPage() {
 
   return (
     <>
+      <DashboardLiveUpdater />
       <PageHeader
         title='Dashboard'
         description='Overview of your MergeLens PR reviews'

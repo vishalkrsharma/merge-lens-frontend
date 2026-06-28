@@ -82,12 +82,6 @@ export async function getApiKeys(): Promise<ApiProvider[]> {
   return data;
 }
 
-export async function getPreferredProvider(): Promise<ReviewProvider | null> {
-  const { data } = await serverClient.get<{ provider: ReviewProvider | null }>(
-    '/settings/preferred-provider',
-  );
-  return data.provider;
-}
 
 export async function getModels(): Promise<ModelEntry[]> {
   const { data } = await serverClient.get<ModelEntry[]>('/settings/models');

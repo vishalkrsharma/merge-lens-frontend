@@ -2,10 +2,10 @@ import { IconKey } from '@tabler/icons-react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { ApiKeysCard } from '@/app/(app)/settings/_components/api-keys-card';
-import { ProviderCard } from '@/app/(app)/settings/_components/provider-card';
+import { ModelCard } from '@/app/(app)/settings/_components/model-card';
 import { Button } from '@/components/ui/button';
 import { getSession } from '@/lib/auth';
-import { getApiKeys, getPreferredProvider } from '@/lib/api';
+import { getApiKeys, getModels, getOllamaUrl, getPreferredModel } from '@/lib/api';
 import { completeOnboarding } from './actions';
 import { InstallationPoller } from './_components/installation-poller';
 
@@ -27,10 +27,8 @@ export default async function ApiKeysPage({ searchParams }: PageProps) {
   const jar = await cookies();
   if (jar.get('ml_onboarding_done')?.value === '1') redirect('/dashboard');
 
-  const [configuredProviders, preferredProvider] = await Promise.all([
-    getApiKeys(),
-    getPreferredProvider(),
-  ]);
+  const [configuredProviders, models, { model: currentModelId, provider: preferredProvider }, ollamaUrl] =
+    await Promise.all([getApiKeys(), getModels(), getPreferredModel(), getOllamaUrl()]);
 
   return (
     <div className='flex min-h-screen flex-col items-center justify-center gap-10 px-4 py-16'>
@@ -49,9 +47,12 @@ export default async function ApiKeysPage({ searchParams }: PageProps) {
 
       <div className='grid w-full max-w-4xl grid-cols-1 gap-6 lg:grid-cols-2'>
         <ApiKeysCard configuredProviders={configuredProviders} />
-        <ProviderCard
+        <ModelCard
+          models={models}
           configuredProviders={configuredProviders}
-          current={preferredProvider}
+          currentModelId={currentModelId}
+          preferredProvider={preferredProvider}
+          ollamaUrl={ollamaUrl}
         />
       </div>
 
