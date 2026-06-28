@@ -94,9 +94,16 @@ export async function getModels(): Promise<ModelEntry[]> {
   return data;
 }
 
-export async function getPreferredModel(): Promise<string | null> {
-  const { data } = await serverClient.get<{ model: string | null }>(
+export async function getPreferredModel(): Promise<{ model: string | null; provider: string | null }> {
+  const { data } = await serverClient.get<{ model: string | null; provider: string | null }>(
     '/settings/preferred-model',
   );
-  return data.model;
+  return data;
+}
+
+export async function getOllamaUrl(): Promise<string | null> {
+  const { data } = await serverClient.get<{ url: string | null }>(
+    '/settings/ollama-url',
+  );
+  return data.url;
 }

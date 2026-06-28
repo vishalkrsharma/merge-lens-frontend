@@ -8,8 +8,13 @@ declare interface ModelEntry {
 }
 declare type AgentType = 'bug' | 'security' | 'performance' | 'style';
 declare type Severity = 'low' | 'medium' | 'high';
-declare type ApiProvider = 'google' | 'openai' | 'anthropic' | 'voyage';
-declare type ReviewProvider = 'google' | 'openai' | 'anthropic';
+declare type ApiProvider =
+  | 'google'
+  | 'openai'
+  | 'anthropic'
+  | 'voyage'
+  | 'ollama';
+declare type ReviewProvider = 'google' | 'openai' | 'anthropic' | 'ollama';
 
 declare interface FindingCounts {
   high: number;
