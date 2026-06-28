@@ -88,3 +88,15 @@ export async function getPreferredProvider(): Promise<ReviewProvider | null> {
   );
   return data.provider;
 }
+
+export async function getModels(): Promise<ModelEntry[]> {
+  const { data } = await serverClient.get<ModelEntry[]>('/settings/models');
+  return data;
+}
+
+export async function getPreferredModel(): Promise<string | null> {
+  const { data } = await serverClient.get<{ model: string | null }>(
+    '/settings/preferred-model',
+  );
+  return data.model;
+}

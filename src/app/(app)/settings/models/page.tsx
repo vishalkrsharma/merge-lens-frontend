@@ -1,18 +1,20 @@
-import { getApiKeys, getPreferredProvider } from '@/lib/api';
+import { getApiKeys, getModels, getPreferredModel } from '@/lib/api';
 import { ApiKeysCard } from '../_components/api-keys-card';
-import { ProviderCard } from '../_components/provider-card';
+import { ModelCard } from '../_components/model-card';
 
 export default async function ModelsPage() {
-  const [configuredProviders, preferredProvider] = await Promise.all([
+  const [configuredProviders, models, currentModelId] = await Promise.all([
     getApiKeys(),
-    getPreferredProvider(),
+    getModels(),
+    getPreferredModel(),
   ]);
   return (
     <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
       <ApiKeysCard configuredProviders={configuredProviders} />
-      <ProviderCard
+      <ModelCard
+        models={models}
         configuredProviders={configuredProviders}
-        current={preferredProvider}
+        currentModelId={currentModelId}
       />
     </div>
   );
