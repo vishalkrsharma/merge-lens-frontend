@@ -25,7 +25,8 @@ export function InstallationPoller() {
       </div>
       <h2 className='text-xl font-semibold'>Connecting your GitHub App…</h2>
       <p className='max-w-sm text-sm text-muted-foreground'>
-        Waiting for GitHub to confirm the installation. This usually takes a few seconds.
+        Waiting for GitHub to confirm the installation. This usually takes a few
+        seconds.
       </p>
     </div>
   );

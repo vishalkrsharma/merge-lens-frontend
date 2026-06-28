@@ -24,7 +24,10 @@ export default function UsageLoading() {
           ))}
         </div>
         {[0, 1, 2].map((i) => (
-          <div key={i} className='flex gap-6 border-b px-4 py-3.5 last:border-0'>
+          <div
+            key={i}
+            className='flex gap-6 border-b px-4 py-3.5 last:border-0'
+          >
             <Skeleton className='h-3.5 w-36 shrink-0' />
             <Skeleton className='h-3.5 w-10 shrink-0' />
             <Skeleton className='h-3.5 w-16 shrink-0' />

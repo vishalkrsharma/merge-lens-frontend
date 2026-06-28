@@ -64,7 +64,8 @@ async function handler(request: NextRequest) {
       allCookies: setCookies,
       sessionCookies,
     });
-    const dest = !hasError && sessionCookies.length > 0 ? '/connect-github' : '/';
+    const dest =
+      !hasError && sessionCookies.length > 0 ? '/connect-github' : '/';
     const redirect = NextResponse.redirect(new URL(dest, request.url));
     for (const c of setCookies) {
       redirect.headers.append('set-cookie', c);

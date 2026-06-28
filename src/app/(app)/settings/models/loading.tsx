@@ -9,7 +9,10 @@ export default function ModelsLoading() {
         <Skeleton className='mb-5 h-3.5 w-48' />
         <div className='space-y-3'>
           {[0, 1, 2].map((i) => (
-            <div key={i} className='flex items-center justify-between border p-3'>
+            <div
+              key={i}
+              className='flex items-center justify-between border p-3'
+            >
               <div className='flex items-center gap-2'>
                 <Skeleton className='h-4 w-4' />
                 <Skeleton className='h-4 w-28' />

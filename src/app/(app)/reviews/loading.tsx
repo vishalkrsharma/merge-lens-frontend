@@ -30,7 +30,11 @@ export default function ReviewsLoading() {
             className='flex gap-4 border-b px-4 py-3.5 last:border-0'
           >
             {COL_WIDTHS.map((w, j) => (
-              <Skeleton key={j} className='h-3.5 shrink-0' style={{ width: w }} />
+              <Skeleton
+                key={j}
+                className='h-3.5 shrink-0'
+                style={{ width: w }}
+              />
             ))}
           </div>
         ))}
