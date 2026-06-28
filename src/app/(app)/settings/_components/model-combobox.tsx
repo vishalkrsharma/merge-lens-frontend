@@ -74,9 +74,6 @@ export function ModelCombobox({
             <>
               <IconCpu size={14} className='shrink-0 text-muted-foreground' />
               <span className='text-foreground'>Ollama (local)</span>
-              <span className='bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground'>
-                Local
-              </span>
             </>
           ) : selected ? (
             <>
