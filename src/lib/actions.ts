@@ -168,6 +168,44 @@ export async function setPreferredModel(
   }
 }
 
+export async function getOllamaModels(): Promise<{
+  models: string[];
+  error?: string;
+}> {
+  try {
+    const { data } = await serverClient.get<{
+      models: string[];
+      error?: string;
+    }>('/settings/ollama-models');
+    return data;
+  } catch {
+    return { models: [], error: 'Failed to reach backend' };
+  }
+}
+
+export async function setPreferredModelWithProvider(
+  model: string | null,
+  provider: ReviewProvider | null,
+): Promise<ActionResult> {
+  try {
+    await serverClient.put('/settings/preferred-model', { model, provider });
+    revalidatePath('/settings');
+    return { success: true, data: undefined };
+  } catch (err) {
+    if (isAxiosError(err)) {
+      const status = err.response?.status ?? 500;
+      const message: string =
+        err.response?.data?.message ?? 'An unexpected error occurred';
+      return { success: false, status, message };
+    }
+    return {
+      success: false,
+      status: 500,
+      message: 'An unexpected error occurred',
+    };
+  }
+}
+
 export async function setOllamaUrl(url: string | null): Promise<ActionResult> {
   try {
     await serverClient.put('/settings/ollama-url', { url: url || null });
