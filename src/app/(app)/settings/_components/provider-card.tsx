@@ -25,7 +25,7 @@ interface ProviderMeta {
   description: string;
 }
 
-const PROVIDER_META: Record<ReviewProvider, ProviderMeta> = {
+const PROVIDER_META: Record<Exclude<ReviewProvider, 'ollama'>, ProviderMeta> = {
   google: {
     label: 'Google Gemini',
     model: 'gemini-2.0-flash',
@@ -85,7 +85,8 @@ export function ProviderCard({
           aria-disabled={isPending}
         >
           {REVIEW_PROVIDERS.map((provider) => {
-            const meta = PROVIDER_META[provider];
+            const meta =
+              PROVIDER_META[provider as Exclude<ReviewProvider, 'ollama'>];
             const needsKey = provider !== 'google';
             const hasKey = configuredProviders.includes(
               provider as ApiProvider,

@@ -5,6 +5,7 @@ import {
   IconBrandGoogle,
   IconBrandOpenai,
   IconChevronDown,
+  IconCpu,
   IconLock,
 } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -27,15 +28,20 @@ const PROVIDER_ICONS: Record<string, React.ElementType> = {
   google: IconBrandGoogle,
   anthropic: IconBrain,
   openai: IconBrandOpenai,
+  ollama: IconCpu,
 };
 
 const PROVIDER_LABELS: Record<string, string> = {
   google: 'Google',
   anthropic: 'Anthropic',
   openai: 'OpenAI',
+  ollama: 'Ollama (local)',
 };
 
-const PROVIDERS = ['google', 'anthropic', 'openai'];
+// Providers that don't require an API key
+const FREE_PROVIDERS = new Set(['ollama']);
+
+const PROVIDERS = ['google', 'anthropic', 'openai', 'ollama'];
 
 interface ModelComboboxProps {
   models: ModelEntry[];
@@ -102,9 +108,9 @@ export function ModelCombobox({
               );
               if (providerModels.length === 0) return null;
               const Icon = PROVIDER_ICONS[provider] ?? IconBrandGoogle;
-              const hasKey = configuredProviders.includes(
-                provider as ApiProvider,
-              );
+              const isFree = FREE_PROVIDERS.has(provider);
+              const hasKey =
+                isFree || configuredProviders.includes(provider as ApiProvider);
 
               return (
                 <span key={provider}>

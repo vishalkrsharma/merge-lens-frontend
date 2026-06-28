@@ -27,7 +27,8 @@ interface ProviderConfig {
   placeholder: string;
 }
 
-const PROVIDERS: Record<ReviewProvider, ProviderConfig> = {
+type KeyedProvider = Exclude<ReviewProvider, 'ollama'>;
+const PROVIDERS: Record<KeyedProvider, ProviderConfig> = {
   google: {
     label: 'Google Gemini',
     Icon: IconBrandGoogle,
@@ -132,7 +133,7 @@ export function ApiKeysCard({
   configuredProviders: ApiProvider[];
 }) {
   const entries = Object.entries(PROVIDERS) as [
-    ReviewProvider,
+    KeyedProvider,
     ProviderConfig,
   ][];
   return (
