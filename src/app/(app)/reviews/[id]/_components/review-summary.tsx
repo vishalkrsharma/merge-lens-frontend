@@ -21,14 +21,24 @@ export function ReviewSummaryCard({ summary }: { summary: ReviewSummary }) {
         </p>
         <Separator />
         <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
-          {AGENT_SUMMARY_KEYS.map(({ agent, key }) => (
-            <div key={agent}>
-              <AgentBadge agent={agent} showLabel className='mb-1' />
-              <p className='text-xs text-muted-foreground leading-relaxed'>
-                {summary[key] as string}
-              </p>
-            </div>
-          ))}
+          {AGENT_SUMMARY_KEYS.map(({ agent, key }) => {
+            const text = summary[key] as string;
+            const failed = !text || text === 'Agent failed to produce results';
+            return (
+              <div key={agent}>
+                <AgentBadge agent={agent} showLabel className='mb-1' />
+                {failed ? (
+                  <p className='text-xs text-muted-foreground/50 italic'>
+                    No results
+                  </p>
+                ) : (
+                  <p className='text-xs text-muted-foreground leading-relaxed'>
+                    {text}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
       </CardContent>
     </Card>
