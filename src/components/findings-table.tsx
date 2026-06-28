@@ -84,7 +84,7 @@ export function FindingsTable({
               <TableCell>
                 <AgentBadge agent={f.agent} />
               </TableCell>
-              <TableCell>
+              <TableCell className='max-w-0 overflow-hidden'>
                 <span className='font-mono text-xs text-muted-foreground break-all'>
                   {f.file}
                 </span>
@@ -92,11 +92,11 @@ export function FindingsTable({
               <TableCell>
                 <span className='font-mono text-xs'>{f.line}</span>
               </TableCell>
-              <TableCell className='text-sm align-top'>
-                <div className='break-words'>{f.issue}</div>
+              <TableCell className='max-w-0 overflow-hidden align-top text-sm'>
+                <div className='break-words whitespace-normal'>{f.issue}</div>
               </TableCell>
-              <TableCell className='text-sm text-muted-foreground align-top'>
-                <div className='break-words'>{f.suggestion}</div>
+              <TableCell className='max-w-0 overflow-hidden align-top text-sm text-muted-foreground'>
+                <div className='break-words whitespace-normal'>{f.suggestion}</div>
               </TableCell>
               {showReviewLink && (
                 <TableCell>
