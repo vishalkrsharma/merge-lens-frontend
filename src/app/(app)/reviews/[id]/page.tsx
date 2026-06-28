@@ -7,6 +7,7 @@ import { getReview } from '@/lib/api';
 import { FindingsTabs } from './_components/findings-tabs';
 import { ReviewErrorBanner } from './_components/review-error-banner';
 import { ReviewSummaryCard } from './_components/review-summary';
+import { ReviewLiveUpdater } from './_components/review-live-updater';
 
 function formatDuration(ms: number) {
   if (ms === 0) return '—';
@@ -50,6 +51,7 @@ export default async function ReviewDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <ReviewLiveUpdater reviewId={id} />
       <div className='mb-4'>
         <Link
           href='/reviews'

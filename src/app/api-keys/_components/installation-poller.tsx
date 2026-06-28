@@ -3,18 +3,17 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { IconBrandGithub, IconLoader2 } from '@tabler/icons-react';
+import { useReviewUpdates } from '@/hooks/use-review-updates';
 
 export function InstallationPoller() {
   const router = useRouter();
 
+  useReviewUpdates(['github-app:installed'], () => router.refresh());
+
+  // Fallback: if socket doesn't connect within 30s, poll once
   useEffect(() => {
-    let attempts = 0;
-    const interval = setInterval(() => {
-      attempts++;
-      router.refresh();
-      if (attempts >= 15) clearInterval(interval);
-    }, 2000);
-    return () => clearInterval(interval);
+    const timeout = setTimeout(() => router.refresh(), 30_000);
+    return () => clearTimeout(timeout);
   }, [router]);
 
   return (
