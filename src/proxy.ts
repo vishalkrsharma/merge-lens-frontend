@@ -1,12 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const host = request.headers.get('host') ?? '';
   const parts = host.split('.');
-
-  // Detect subdomains on *.localhost (e.g. "acme.localhost:3000")
-  // "localhost:3000" splits to ["localhost:3000"] — no subdomain
-  // "acme.localhost:3000" splits to ["acme", "localhost:3000"] — has subdomain
   const isLocalhostSubdomain =
     parts.length >= 2 && !parts[0].startsWith('localhost') && host.includes('localhost');
 
